@@ -1,1 +1,120 @@
-/* You can add global styles to this file, and also import other style files */
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.dev/guide/theming
+@use '@angular/material' as mat;
+@use "tailwindcss";
+
+html {
+  @include mat.theme((
+    color: (
+      theme-type: light,
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}/* You can add global styles to this file, and also import other style files */
+@custom-variant dark (&:where(.dark, .dark *));
+@theme {
+    --color-primary: #152598;
+    --color-primary-light: #2538C7;
+    --color-primary-dark: #0F1B72;
+    --color-secondary: #D836C1;
+    --color-secondary-light: #E869D9;
+    --color-secondary-dark: #A62997;
+    --color-accent: #8B35B3;
+    --color-accent-light: #B369D9;
+    --color-accent-dark: #6A298C;
+
+    // Primary Colors - Deep Blue (#152598)
+    --color-primary-50: #eef2ff;
+    --color-primary-100: #e0e7ff;
+    --color-primary-200: #c7d2fe;
+    --color-primary-300: #a5b4fc;
+    --color-primary-400: #818cf8;
+    --color-primary-500: #152598;
+    --color-primary-600: #0f1b72;
+    --color-primary-700: #0a1357;
+    --color-primary-800: #050b3c;
+    --color-primary-900: #020521;
+    --color-primary-950: #010210;
+
+    // Secondary Colors - Vibrant Pink (#D836C1)
+    --color-secondary-50: #fdf2f8;
+    --color-secondary-100: #fce7f3;
+    --color-secondary-200: #fbcfe8;
+    --color-secondary-300: #f9a8d4;
+    --color-secondary-400: #f472b6;
+    --color-secondary-500: #D836C1;
+    --color-secondary-600: #b91c9f;
+    --color-secondary-700: #99167e;
+    --color-secondary-800: #7a115f;
+    --color-secondary-900: #5c0c42;
+    --color-secondary-950: #3d0729;
+
+    // Accent Colors - Rich Purple (#8B35B3)
+    --color-accent-50: #faf5ff;
+    --color-accent-100: #f3e8ff;
+    --color-accent-200: #e9d5ff;
+    --color-accent-300: #d8b4fe;
+    --color-accent-400: #c084fc;
+    --color-accent-500: #8B35B3;
+    --color-accent-600: #7c2d9f;
+    --color-accent-700: #6d258b;
+    --color-accent-800: #5e1d77;
+    --color-accent-900: #4f1563;
+    --color-accent-950: #400d4f;
+}
+
+@layer base {
+  body {
+    @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-white;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-md transition-colors duration-200;
+  }
+
+  .btn-secondary {
+    @apply px-4 py-2 bg-secondary-500 hover:bg-secondary-600 text-white rounded-md transition-colors duration-200;
+  }
+
+  .btn-accent {
+    @apply px-4 py-2 bg-accent-500 hover:bg-accent-600 text-white rounded-md transition-colors duration-200;
+  }
+
+  .card {
+    @apply bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-all duration-200 hover:shadow-lg;
+  }
+
+  .input {
+    @apply w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white;
+  }
+}
+
+// Custom scrollbar
+::-webkit-scrollbar {
+  @apply w-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-800;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-gradient-to-br from-primary-500 to-secondary-600 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary-600 dark:bg-primary-500 ;
+}
+
+::ng-deep .cdk-overlay-backdrop {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

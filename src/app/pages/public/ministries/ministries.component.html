@@ -1,0 +1,129 @@
+<!-- Hero Section -->
+<section class="relative h-[50vh] flex items-center justify-center overflow-hidden">
+    <!-- Background Image with Overlay -->
+    <div class="absolute inset-0 z-0">
+        <img src="assets/images/ministries-hero.jpg" alt="Church Ministries"
+            class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-r from-primary-900/80 to-accent-900/80"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="relative z-10 text-center text-white px-4">
+        <h1
+            class="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-gray-100 bg-clip-text text-transparent">
+            Our Ministries
+        </h1>
+        <p class="text-xl md:text-2xl mb-8 text-gray-200">
+            Discover ways to serve, grow, and connect
+        </p>
+    </div>
+</section>
+
+<!-- Ministry Categories -->
+<section class="py-8 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-wrap justify-center gap-4">
+            <button *ngFor="let category of categories" (click)="selectedCategory = category.id"
+                [class.bg-primary-600]="selectedCategory === category.id"
+                [class.text-white]="selectedCategory === category.id"
+                [class.bg-gray-100]="selectedCategory !== category.id"
+                [class.text-gray-700]="selectedCategory !== category.id"
+                class="px-6 py-2 rounded-full text-sm font-medium transition-colors duration-200 hover:bg-primary-600 hover:text-white dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-primary-600 dark:hover:text-white">
+                {{ category.name }}
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Ministries Grid -->
+<section class="py-16 bg-gray-50 dark:bg-gray-800">
+    <div class="container mx-auto px-4">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div *ngFor="let ministry of filteredMinistries"
+                class="bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-200">
+                <!-- Ministry Image -->
+                <div class="relative h-48 overflow-hidden">
+                    <img [src]="ministry.image" [alt]="ministry.title"
+                        class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-300">
+                    <div class="absolute top-4 right-4">
+                        <span class="px-3 py-1 bg-primary-600 text-white text-sm font-medium rounded-full">
+                            {{ ministry.category }}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Ministry Details -->
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ ministry.title }}</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">{{ ministry.description }}</p>
+
+                    <div class="space-y-3 text-gray-600 dark:text-gray-300 mb-6">
+                        <div class="flex items-center">
+                            <svg class="h-5 w-5 text-primary-500 mr-2" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            {{ ministry.schedule }}
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="h-5 w-5 text-primary-500 mr-2" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                            {{ ministry.ageGroup }}
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h4 class="font-semibold text-gray-900 dark:text-white">Features:</h4>
+                        <ul class="space-y-2">
+                            <li *ngFor="let feature of ministry.features"
+                                class="flex items-center text-gray-600 dark:text-gray-300">
+                                <svg class="h-5 w-5 text-primary-500 mr-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7" />
+                                </svg>
+                                {{ feature }}
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-6">
+                        <button
+                            class="w-full px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200">
+                            Learn More
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-16 bg-gradient-to-r from-primary-700 to-accent-600">
+    <div class="container mx-auto px-4">
+        <div class="max-w-3xl mx-auto text-center">
+            <h2 class="text-3xl font-bold text-white mb-6">
+                Get Involved
+            </h2>
+            <p class="text-xl text-gray-100 mb-8">
+                There's a place for everyone in our church family. Join a ministry and make a difference in our
+                community.
+            </p>
+            <div class="space-y-4 md:space-y-0 md:space-x-4">
+                <a routerLink="/contact"
+                    class="inline-block px-8 py-3 bg-white text-primary-700 hover:bg-gray-100 rounded-lg transition-colors duration-200">
+                    Contact Us
+                </a>
+                <a routerLink="/events"
+                    class="inline-block px-8 py-3 bg-transparent border-2 border-white text-white hover:bg-white/10 rounded-lg transition-colors duration-200">
+                    View Events
+                </a>
+            </div>
+        </div>
+    </div>
+</section>

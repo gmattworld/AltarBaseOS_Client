@@ -1,0 +1,22 @@
+// Visit Component Styles
+.visit-card {
+  transition: transform 0.3s ease-in-out;
+  
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+.direction-icon {
+  transition: transform 0.3s ease-in-out;
+  
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.service-time-card {
+  background: linear-gradient(135deg, var(--gray-50), var(--gray-100));
+
+  //@apply dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900;
+} 

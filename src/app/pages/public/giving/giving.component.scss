@@ -1,0 +1,364 @@
+// Giving Component Styles
+:host {
+  display: block;
+}
+
+// Hero Section
+.hero-section {
+  position: relative;
+  height: 40vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  .hero-background {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(var(--primary-900-rgb), 0.8), rgba(var(--accent-900-rgb), 0.8));
+    }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    color: white;
+    padding: 0 1rem;
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(to right, white, #f3f4f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+
+      @media (min-width: 768px) {
+        font-size: 3.75rem;
+      }
+    }
+
+    p {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      color: #e5e7eb;
+
+      @media (min-width: 768px) {
+        font-size: 1.5rem;
+      }
+    }
+  }
+}
+
+// Giving Options Section
+.giving-options {
+  padding: 4rem 0;
+  background-color: white;
+
+  .dark & {
+    background-color: #111827;
+  }
+
+  .option-card {
+    background-color: #f9fafb;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    .dark & {
+      background-color: #1f2937;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #111827;
+
+      .dark & {
+        color: white;
+      }
+    }
+
+    p {
+      color: #4b5563;
+
+      .dark & {
+        color: #d1d5db;
+      }
+    }
+  }
+}
+
+// Giving Form Section
+.giving-form {
+  padding: 4rem 0;
+  background-color: #f9fafb;
+
+  .dark & {
+    background-color: #1f2937;
+  }
+
+  .form-container {
+    max-width: 48rem;
+    margin: 0 auto;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+    .dark & {
+      background-color: #111827;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+      color: #111827;
+
+      .dark & {
+        color: white;
+      }
+    }
+
+    .suggested-amounts {
+      margin-bottom: 1.5rem;
+
+      label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: #374151;
+
+        .dark & {
+          color: #d1d5db;
+        }
+      }
+
+      .amount-buttons {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+
+        @media (min-width: 640px) {
+          grid-template-columns: repeat(3, 1fr);
+        }
+
+        @media (min-width: 768px) {
+          grid-template-columns: repeat(5, 1fr);
+        }
+
+        button {
+          padding: 0.5rem 1rem;
+          border-radius: 0.5rem;
+          border: 1px solid var(--primary-200);
+          color: var(--primary-700);
+          transition: all 0.2s ease;
+
+          &:hover {
+            background-color: var(--primary-50);
+          }
+
+          .dark & {
+            border-color: var(--primary-700);
+            color: var(--primary-300);
+
+            &:hover {
+              background-color: var(--primary-900);
+            }
+          }
+        }
+      }
+    }
+
+    form {
+      .form-group {
+        margin-bottom: 1.5rem;
+
+        label {
+          display: block;
+          font-size: 0.875rem;
+          font-weight: 500;
+          margin-bottom: 0.25rem;
+          color: #374151;
+
+          .dark & {
+            color: #d1d5db;
+          }
+        }
+
+        input, select, textarea {
+          width: 100%;
+          padding: 0.5rem 1rem;
+          border-radius: 0.5rem;
+          border: 1px solid #d1d5db;
+          background-color: white;
+          color: #111827;
+          transition: all 0.2s ease;
+
+          &:focus {
+            outline: none;
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 2px rgba(var(--primary-500-rgb), 0.2);
+          }
+
+          .dark & {
+            border-color: #4b5563;
+            background-color: #1f2937;
+            color: white;
+
+            &:focus {
+              border-color: var(--primary-500);
+              box-shadow: 0 0 0 2px rgba(var(--primary-500-rgb), 0.2);
+            }
+          }
+        }
+
+        .amount-input {
+          position: relative;
+
+          .dollar-sign {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+          }
+
+          input {
+            padding-left: 1.75rem;
+          }
+        }
+      }
+
+      .security-badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin: 1.5rem 0;
+
+        .dark & {
+          color: #9ca3af;
+        }
+
+        svg {
+          width: 1.25rem;
+          height: 1.25rem;
+        }
+      }
+
+      button[type="submit"] {
+        width: 100%;
+        padding: 0.75rem 1.5rem;
+        background-color: var(--primary-600);
+        color: white;
+        font-weight: 500;
+        border-radius: 0.5rem;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+          background-color: var(--primary-700);
+        }
+      }
+    }
+  }
+}
+
+// Additional Giving Options Section
+.additional-options {
+  padding: 4rem 0;
+  background-color: white;
+
+  .dark & {
+    background-color: #111827;
+  }
+
+  h2 {
+    font-size: 1.875rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: #111827;
+
+    .dark & {
+      color: white;
+    }
+  }
+
+  .option-card {
+    background-color: #f9fafb;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+    .dark & {
+      background-color: #1f2937;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #111827;
+
+      .dark & {
+        color: white;
+      }
+    }
+
+    p {
+      color: #4b5563;
+      margin-bottom: 1rem;
+
+      .dark & {
+        color: #d1d5db;
+      }
+    }
+
+    .text-to-give {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--primary-600);
+
+      .dark & {
+        color: var(--primary-400);
+      }
+
+      svg {
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+    }
+
+    .mailing-address {
+      color: #4b5563;
+
+      .dark & {
+        color: #d1d5db;
+      }
+    }
+  }
+} 

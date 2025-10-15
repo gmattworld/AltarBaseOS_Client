@@ -1,0 +1,171 @@
+<!-- Hero Section -->
+<section class="relative h-[40vh] flex items-center justify-center overflow-hidden">
+    <!-- Background Image with Overlay -->
+    <div class="absolute inset-0 z-0">
+        <img src="assets/images/giving-hero.jpg" alt="Online Giving" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-r from-primary-900/80 to-accent-900/80"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="relative z-10 text-center text-white px-4">
+        <h1
+            class="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-gray-100 bg-clip-text text-transparent">
+            Online Giving
+        </h1>
+        <p class="text-xl md:text-2xl mb-8 text-gray-200">
+            Support our ministry through secure online giving
+        </p>
+    </div>
+</section>
+
+<!-- Giving Options -->
+<section class="py-16 bg-white dark:bg-gray-900">
+    <div class="container mx-auto px-4">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div *ngFor="let fund of givingFunds"
+                class="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{{ fund.name }}</h3>
+                <p class="text-gray-600 dark:text-gray-300">{{ fund.description }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Giving Form -->
+<section class="py-16 bg-gray-50 dark:bg-gray-800">
+    <div class="container mx-auto px-4">
+        <div class="max-w-3xl mx-auto">
+            <div class="bg-white dark:bg-gray-900 p-8 rounded-xl shadow-lg">
+                <h2 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Make a Donation</h2>
+
+                <!-- Suggested Amounts -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Suggested
+                        Amounts</label>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
+                        <button *ngFor="let amount of suggestedAmounts" (click)="setAmount(amount)"
+                            class="py-2 px-4 rounded-lg border border-primary-200 dark:border-primary-700 text-primary-700 dark:text-primary-300 hover:bg-primary-50 dark:hover:bg-primary-900 transition-colors duration-200">
+                            ${{ amount }}
+                        </button>
+                    </div>
+                </div>
+
+                <form (ngSubmit)="onSubmit()" class="space-y-6">
+                    <!-- Amount -->
+                    <div>
+                        <label for="amount"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Amount</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                            <input type="number" id="amount" [(ngModel)]="givingForm.amount" name="amount" required
+                                min="1" step="0.01"
+                                class="w-full pl-8 pr-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <!-- Frequency -->
+                    <div>
+                        <label for="frequency"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Frequency</label>
+                        <select id="frequency" [(ngModel)]="givingForm.frequency" name="frequency" required
+                            class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                            <option *ngFor="let freq of frequencies" [value]="freq.id">{{ freq.name }}</option>
+                        </select>
+                    </div>
+
+                    <!-- Fund -->
+                    <div>
+                        <label for="fund"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Designated
+                            Fund</label>
+                        <select id="fund" [(ngModel)]="givingForm.fund" name="fund" required
+                            class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                            <option *ngFor="let fund of givingFunds" [value]="fund.id">{{ fund.name }}</option>
+                        </select>
+                    </div>
+
+                    <!-- Personal Information -->
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Personal Information</h3>
+
+                        <div>
+                            <label for="name"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
+                            <input type="text" id="name" [(ngModel)]="givingForm.name" name="name" required
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                        </div>
+
+                        <div>
+                            <label for="email"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                            <input type="email" id="email" [(ngModel)]="givingForm.email" name="email" required
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                        </div>
+
+                        <div>
+                            <label for="phone"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone</label>
+                            <input type="tel" id="phone" [(ngModel)]="givingForm.phone" name="phone"
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                        </div>
+
+                        <div>
+                            <label for="message"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Message
+                                (Optional)</label>
+                            <textarea id="message" [(ngModel)]="givingForm.message" name="message" rows="3"
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Security Badge -->
+                    <div class="flex items-center justify-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                            </path>
+                        </svg>
+                        <span>Secure Payment Processing</span>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit"
+                        class="w-full py-3 px-6 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors duration-200">
+                        Continue to Payment
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Additional Giving Options -->
+<section class="py-16 bg-white dark:bg-gray-900">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">Other Ways to Give</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+                <h3 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Text to Give</h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-4">Send a text message to make your donation quickly and
+                    easily.</p>
+                <div class="flex items-center space-x-2 text-primary-600 dark:text-primary-400">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
+                        </path>
+                    </svg>
+                    <span>Text "GIVE" to (555) 123-4567</span>
+                </div>
+            </div>
+            <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+                <h3 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Mail a Check</h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-4">Send your donation by mail to our church office.</p>
+                <div class="text-gray-600 dark:text-gray-300">
+                    {{ churchName }}<br>
+                    123 Church Street<br>
+                    City, State 12345
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

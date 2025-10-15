@@ -1,0 +1,250 @@
+<div class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+  <!-- Header -->
+  <header class="bg-white dark:bg-gray-800 shadow-sm">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 flex justify-between items-center">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">My Profile</h1>
+        <p class="mt-1 text-lg text-gray-600 dark:text-gray-300">View and manage your personal and church-related
+          information.</p>
+      </div>
+      <button (click)="toggleEditMode()" [disabled]="!member()"
+        class="px-6 py-2 rounded-lg transition-colors duration-200 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
+        [ngClass]="isEditMode() ? 'bg-red-100 text-red-700 hover:bg-red-200' : 'bg-primary-600 text-white hover:bg-primary-700'">
+        <svg *ngIf="!isEditMode()" class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L16.732 3.732z"></path>
+        </svg>
+        <svg *ngIf="isEditMode()" class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+        {{ isEditMode() ? 'Cancel Edit' : 'Edit Profile' }}
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <ng-container *ngIf="member() as memberData; else loading">
+      <!-- View Mode -->
+      <div *ngIf="!isEditMode(); else editProfileForm" class="space-y-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <!-- Left Column: Profile Card -->
+          <div class="lg:col-span-1 space-y-8">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center">
+              <img
+                class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-primary-200 dark:border-primary-700 object-cover"
+                [src]="memberData.user.profile_picture || 'assets/images/default-avatar.png'" alt="Profile Picture">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ memberData.preferred_name | titlecase }}
+              </h2>
+              <p class="text-primary-500 font-semibold mt-2">{{ memberData.member_id }}</p>
+              <p class="text-gray-600 dark:text-gray-400 mt-2">{{ memberData.occupation || 'Profession not specified' }}
+              </p>
+              <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Status:</span>
+                <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium"
+                  [ngClass]="memberData.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'">
+                  {{ memberData.status }}
+                </span>
+              </div>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Contact Info</h3>
+              <div class="space-y-3">
+                <p><strong class="font-semibold text-gray-500 dark:text-gray-400 w-24 inline-block">Email:</strong>
+                  <span class="text-gray-800 dark:text-gray-200">{{ memberData.email }}</span>
+                </p>
+                <p><strong class="font-semibold text-gray-500 dark:text-gray-400 w-24 inline-block">Mobile:</strong>
+                  <span class="text-gray-800 dark:text-gray-200">{{ memberData.phone_mobile || 'N/A' }}</span>
+                </p>
+                <p><strong class="font-semibold text-gray-500 dark:text-gray-400 w-24 inline-block">Home:</strong> <span
+                    class="text-gray-800 dark:text-gray-200">{{ memberData.phone_home || 'N/A' }}</span></p>
+              </div>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Emergency Contact Info</h3>
+              <div class="space-y-3">
+                <p><strong class="font-semibold text-gray-500 dark:text-gray-400 w-24 inline-block">Name:</strong>
+                  <span class="text-gray-800 dark:text-gray-200">{{ memberData.emergency_contact_name || 'N/A' }}</span>
+                </p>
+                <p><strong
+                    class="font-semibold text-gray-500 dark:text-gray-400 w-24 inline-block">Relationship:</strong>
+                  <span class="text-gray-800 dark:text-gray-200">{{ memberData.emergency_contact_relationship || 'N/A'
+                    }}</span>
+                </p>
+                <p><strong class="font-semibold text-gray-500 dark:text-gray-400 w-24 inline-block">Phone:</strong>
+                  <span class="text-gray-800 dark:text-gray-200">{{ memberData.emergency_contact_phone || 'N/A'
+                    }}</span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Details -->
+          <div class="lg:col-span-2 space-y-8">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Personal Details</h3>
+              <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+                <div>
+                  <dt class="font-semibold text-gray-500 dark:text-gray-400">Full Name</dt>
+                  <dd class="text-gray-900 dark:text-white">{{ memberData.user.first_name }} {{
+                    memberData.user.last_name }}</dd>
+                </div>
+                <div>
+                  <dt class="font-semibold text-gray-500 dark:text-gray-400">Date of Birth</dt>
+                  <dd class="text-gray-900 dark:text-white">{{ memberData.date_of_birth | date:'longDate' | uppercase }}
+                  </dd>
+                </div>
+                <div>
+                  <dt class="font-semibold text-gray-500 dark:text-gray-400">Gender</dt>
+                  <dd class="text-gray-900 dark:text-white">{{ memberData.gender || 'N/A' }}</dd>
+                </div>
+                <div>
+                  <dt class="font-semibold text-gray-500 dark:text-gray-400">Marital Status</dt>
+                  <dd class="text-gray-900 dark:text-white">{{ memberData.marital_status || 'N/A' }}</dd>
+                </div>
+                <div class="sm:col-span-2">
+                  <dt class="font-semibold text-gray-500 dark:text-gray-400">Bio</dt>
+                  <dd class="text-gray-900 dark:text-white mt-1">{{ memberData.bio || 'No biography provided.' }}</dd>
+                </div>
+              </dl>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Church & Ministry</h3>
+              <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+                <div>
+                  <dt class="font-semibold text-gray-500 dark:text-gray-400">Join Date</dt>
+                  <dd class="text-gray-900 dark:text-white">{{ memberData.join_date | date:'longDate' }}</dd>
+                </div>
+                <div>
+                  <dt class="font-semibold text-gray-500 dark:text-gray-400">Membership Class</dt>
+                  <dd class="text-gray-900 dark:text-white">{{ memberData.membership_class_date | date:'longDate' }}
+                  </dd>
+                </div>
+                <div class="sm:col-span-2">
+                  <dt class="font-semibold text-gray-500 dark:text-gray-400">Ministry Roles</dt>
+                  <dd class="text-gray-900 dark:text-white mt-1">{{ memberData.ministry_roles?.join(', ') || 'None' }}
+                  </dd>
+                </div>
+                <div class="sm:col-span-2">
+                  <dt class="font-semibold text-gray-500 dark:text-gray-400">Skills</dt>
+                  <dd class="text-gray-900 dark:text-white mt-1">{{ memberData.skills?.join(', ') || 'None' }}</dd>
+                </div>
+              </dl>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Family</h3>
+              <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+                <div>
+                  <dt class="font-semibold text-gray-500 dark:text-gray-400">Family Role</dt>
+                  <dd class="text-gray-900 dark:text-white">{{ memberData.family_role | titlecase }}</dd>
+                </div>
+                <div>
+                  <dt class="font-semibold text-gray-500 dark:text-gray-400">Family Notes</dt>
+                  <dd class="text-gray-900 dark:text-white">{{ memberData.family_notes }}
+                  </dd>
+                </div>
+                <div class="sm:col-span-2">
+                  <dt class="font-semibold text-gray-500 dark:text-gray-400">Family ID</dt>
+                  <dd class="text-gray-900 dark:text-white mt-1">{{ memberData.family_id }}
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit Mode Form -->
+      <ng-template #editProfileForm>
+        <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="space-y-8">
+          <!-- Form sections here -->
+          <div formGroupName="personal" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+            <h3 class="text-xl font-bold mb-6 text-gray-900 dark:text-white">Personal Details</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div class="sm:col-span-2"><label class="block text-gray-700 dark:text-gray-300">Preferred
+                  Name</label><input type="text" formControlName="preferred_name"
+                  class="w-full mt-1 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg p-3">
+              </div>
+              <div><label class="block text-gray-700 dark:text-gray-300">First Name</label><input type="text"
+                  formControlName="first_name"
+                  class="w-full mt-1 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg p-3">
+              </div>
+              <div><label class="block text-gray-700 dark:text-gray-300">Last Name</label><input type="text"
+                  formControlName="last_name"
+                  class="w-full mt-1 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg p-3">
+              </div>
+              <div><label class="block text-gray-700 dark:text-gray-300">Date of Birth</label><input type="date"
+                  formControlName="date_of_birth"
+                  class="w-full mt-1 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg p-3">
+              </div>
+              <div><label class="block text-gray-700 dark:text-gray-300">Gender</label><input type="text"
+                  formControlName="gender"
+                  class="w-full mt-1 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg p-3">
+              </div>
+              <div class="sm:col-span-2"><label class="block text-gray-700 dark:text-gray-300">Bio</label><textarea
+                  formControlName="bio" rows="4"
+                  class="w-full mt-1 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg p-3"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div formGroupName="contact" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+            <h3 class="text-xl font-bold mb-6 text-gray-900 dark:text-white">Contact Details</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div><label class="block text-gray-700 dark:text-gray-300">Email</label><input type="email"
+                  formControlName="email"
+                  class="w-full mt-1 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg p-3">
+              </div>
+              <div><label class="block text-gray-700 dark:text-gray-300">Mobile Phone</label><input type="tel"
+                  formControlName="phone_mobile"
+                  class="w-full mt-1 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg p-3">
+              </div>
+            </div>
+          </div>
+
+          <div formGroupName="address" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+            <h3 class="text-xl font-bold mb-6 text-gray-900 dark:text-white">Address</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div class="sm:col-span-2"><label class="block text-gray-700 dark:text-gray-300">Street</label><input
+                  type="text" formControlName="address_street"
+                  class="w-full mt-1 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg p-3">
+              </div>
+              <div><label class="block text-gray-700 dark:text-gray-300">City</label><input type="text"
+                  formControlName="address_city"
+                  class="w-full mt-1 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg p-3">
+              </div>
+              <div><label class="block text-gray-700 dark:text-gray-300">State / Province</label><input type="text"
+                  formControlName="address_state"
+                  class="w-full mt-1 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg p-3">
+              </div>
+              <div><label class="block text-gray-700 dark:text-gray-300">Postal Code</label><input type="text"
+                  formControlName="address_postal"
+                  class="w-full mt-1 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg p-3">
+              </div>
+              <div><label class="block text-gray-700 dark:text-gray-300">Country</label><input type="text"
+                  formControlName="address_country"
+                  class="w-full mt-1 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg p-3">
+              </div>
+            </div>
+          </div>
+          <!-- Submit Button -->
+          <div class="flex justify-end mt-8">
+            <button type="button" (click)="toggleEditMode()"
+              class="px-6 py-3 mr-4 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600">Cancel</button>
+            <button type="submit" [disabled]="profileForm.invalid"
+              class="px-8 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed">
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </ng-template>
+    </ng-container>
+
+    <!-- Loading Indicator -->
+    <ng-template #loading>
+      <div class="text-center py-20">
+        <p class="text-lg text-gray-600 dark:text-gray-400">Loading profile...</p>
+      </div>
+    </ng-template>
+  </main>
+</div>

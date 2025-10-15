@@ -1,0 +1,45 @@
+<div class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+  <!-- Header -->
+  <header class="bg-white dark:bg-gray-800 shadow-sm">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 flex justify-between items-center">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Giving History</h1>
+        <p class="mt-1 text-lg text-gray-600 dark:text-gray-300">Review your past contributions.</p>
+      </div>
+      <button (click)="openModal()"
+        class="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center font-semibold">
+        <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+        </svg>
+        Make a New Donation
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content: Donation History -->
+  <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-x-auto">
+      <table class="w-full text-left">
+        <thead class="bg-gray-50 dark:bg-gray-700">
+          <tr>
+            <th class="p-4 font-semibold">Date</th>
+            <th class="p-4 font-semibold">Amount</th>
+            <th class="p-4 font-semibold">Fund</th>
+            <th class="p-4 font-semibold">Transaction ID</th>
+          </tr>
+        </thead>
+        <tbody class="dark:text-gray-300">
+          <tr *ngFor="let donation of previousDonations" class="border-t dark:border-gray-700">
+            <td class="p-4">{{ donation.date | date: 'longDate' }}</td>
+            <td class="p-4 font-medium text-green-600 dark:text-green-400">{{ donation.amount | currency }}</td>
+            <td class="p-4">{{ donation.fund }}</td>
+            <td class="p-4 text-gray-500 dark:text-gray-400">{{ donation.transactionId }}</td>
+          </tr>
+          <tr *ngIf="previousDonations.length === 0">
+            <td colspan="4" class="p-4 text-center text-gray-500 dark:text-gray-400">No donation history found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>

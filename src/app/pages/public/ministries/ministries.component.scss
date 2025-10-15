@@ -1,0 +1,21 @@
+// Ministries Component Styles
+.ministry-card {
+  transition: transform 0.3s ease-in-out;
+  
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+.ministry-image {
+  transition: transform 0.3s ease-in-out;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.category-badge {
+  background: linear-gradient(135deg, var(--primary-600), var(--accent-500));
+  backdrop-filter: blur(4px);
+} 

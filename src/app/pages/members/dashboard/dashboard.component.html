@@ -1,0 +1,87 @@
+<div class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+  <!-- Header -->
+  <header class="bg-white dark:bg-gray-800 shadow-sm">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+          Welcome, {{ user()?.first_name || 'Member' }}!
+        </h1>
+        <p class="mt-1 text-lg text-gray-600 dark:text-gray-300">
+          Here's a snapshot of what's happening at your church.
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Left Column -->
+      <div class="lg:col-span-2 space-y-8">
+        <!-- Latest Sermon -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+          <div class="md:flex">
+            <div class="md:flex-shrink-0">
+              <img class="h-48 w-full object-cover md:w-48" [src]="latestSermon.thumbnail" [alt]="latestSermon.title">
+            </div>
+            <div class="p-8">
+              <div class="uppercase tracking-wide text-sm text-primary-500 font-semibold">Latest Sermon</div>
+              <a href="#"
+                class="block mt-1 text-lg leading-tight font-medium text-black dark:text-white hover:underline">{{
+                latestSermon.title }}</a>
+              <p class="mt-2 text-gray-500 dark:text-gray-400">{{ latestSermon.preacher }} - {{ latestSermon.date |
+                date: 'longDate' }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upcoming Events -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Upcoming Events</h3>
+          <div class="space-y-4">
+            <div *ngFor="let event of upcomingEvents" class="flex items-center">
+              <div
+                class="bg-primary-100 dark:bg-primary-900/40 text-primary-700 dark:text-primary-300 rounded-lg p-3 text-center mr-4">
+                <div class="font-bold text-lg">{{ event.date | date: 'dd' }}</div>
+                <div class="text-sm">{{ event.date | date: 'MMM' }}</div>
+              </div>
+              <div>
+                <h4 class="font-semibold text-gray-800 dark:text-gray-200">{{ event.name }}</h4>
+                <p class="text-gray-600 dark:text-gray-400">{{ event.time }} at {{ event.location }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="lg:col-span-1 space-y-8">
+        <!-- Profile Card -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center">
+          <img class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-primary-200 dark:border-primary-700"
+            [src]="user()?.profile_picture || 'assets/images/default-avatar.png'" alt="Profile Picture">
+          <h2 class="text-xl font-bold text-gray-900 dark:text-white">{{ user()?.first_name }} {{ user()?.last_name }}
+          </h2>
+          <p class="text-gray-600 dark:text-gray-400">{{ user()?.email }}</p>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Member since: {{ user()?.created_at | date:
+            'longDate' }}</p>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Quick Links</h3>
+          <div class="space-y-3">
+            <a *ngFor="let link of quickLinks" [routerLink]="link.path"
+              class="flex items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 group">
+              <svg class="h-6 w-6 mr-3 text-gray-500 dark:text-gray-400 group-hover:text-primary-500 transition-colors"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="link.iconPath" />
+              </svg>
+              <span class="font-medium text-gray-800 dark:text-gray-200">{{ link.name }}</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
