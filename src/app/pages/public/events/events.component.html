@@ -1,123 +1,100 @@
-<!-- Hero Section -->
-<section class="relative h-[50vh] flex items-center justify-center overflow-hidden">
-    <!-- Background Image with Overlay -->
-    <div class="absolute inset-0 z-0">
-        <img src="assets/images/events-hero.jpg" alt="Church Events" class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-gradient-to-r from-primary-900/80 to-accent-900/80"></div>
-    </div>
-
-    <!-- Content -->
-    <div class="relative z-10 text-center text-white px-4">
-        <h1
-            class="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-gray-100 bg-clip-text text-transparent">
-            Upcoming Events
-        </h1>
-        <p class="text-xl md:text-2xl mb-8 text-gray-200">
-            Join us for fellowship, worship, and community
-        </p>
-    </div>
+<section class="relative h-[50vh] flex items-center justify-center text-center text-white overflow-hidden">
+  <div class="absolute inset-0 z-0">
+    <img src="assets/images/events-hero.jpg" alt="A vibrant church event in progress" class="w-full h-full object-cover">
+    <div class="absolute inset-0 bg-gradient-to-tr from-primary-900/70 via-accent-900/60 to-black/70"></div>
+  </div>
+  <div class="relative z-10 px-4">
+    <h1 class="text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">Church Events</h1>
+    <p class="text-lg md:text-xl max-w-3xl mx-auto text-gray-200">Connect, grow, and serve with our community.</p>
+  </div>
 </section>
 
-<!-- Event Categories -->
-<section class="py-8 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
-    <div class="container mx-auto px-4">
-        <div class="flex flex-wrap justify-center gap-4">
-            <button *ngFor="let category of categories" (click)="selectedCategory = category.id"
-                [class.bg-primary-600]="selectedCategory === category.id"
-                [class.text-white]="selectedCategory === category.id"
-                [class.bg-gray-100]="selectedCategory !== category.id"
-                [class.text-gray-700]="selectedCategory !== category.id"
-                class="px-6 py-2 rounded-full text-sm font-medium transition-colors duration-200 hover:bg-primary-600 hover:text-white dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-primary-600 dark:hover:text-white">
-                {{ category.name }}
-            </button>
-        </div>
+@if (allEvents()?.length) {
+<section class="py-6 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-[80px] z-40">
+  <div class="container mx-auto px-6">
+    <div class="flex flex-wrap justify-center gap-3">
+      @for (category of categories(); track category.id) {
+        <button (click)="selectCategory(category.id)"
+                [class.bg-secondary-600]="selectedCategory() === category.id"
+                [class.text-white]="selectedCategory() === category.id"
+                [class.bg-gray-100]="selectedCategory() !== category.id"
+                [class.text-gray-700]="selectedCategory() !== category.id"
+                class="px-5 py-2 rounded-full text-sm font-medium transition-colors duration-200 hover:bg-secondary-500 hover:text-white dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-secondary-600 dark:hover:text-white">
+          {{ category.name }}
+        </button>
+      }
     </div>
+  </div>
 </section>
 
-<!-- Events Grid -->
-<section class="py-16 bg-gray-50 dark:bg-gray-800">
-    <div class="container mx-auto px-4">
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div *ngFor="let event of filteredEvents"
-                class="bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-200">
-                <!-- Event Image -->
-                <div class="relative h-48 overflow-hidden">
-                    <img [src]="event.image" [alt]="event.title"
-                        class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-300">
-                    <div class="absolute top-4 right-4">
-                        <span class="px-3 py-1 bg-primary-600 text-white text-sm font-medium rounded-full">
-                            {{ event.category }}
-                        </span>
-                    </div>
-                </div>
+<section class="py-20 bg-gray-50 dark:bg-gray-800">
+  <div class="container mx-auto px-6 space-y-16">
 
-                <!-- Event Details -->
-                <div class="p-6">
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ event.title }}</h3>
-                    <div class="space-y-3 text-gray-600 dark:text-gray-300">
-                        <div class="flex items-center">
-                            <svg class="h-5 w-5 text-primary-500 mr-2" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                            {{ formatDate(event.date) }}
-                        </div>
-                        <div class="flex items-center">
-                            <svg class="h-5 w-5 text-primary-500 mr-2" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            {{ event.time }}
-                        </div>
-                        <div class="flex items-center">
-                            <svg class="h-5 w-5 text-primary-500 mr-2" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                            {{ event.location }}
-                        </div>
-                    </div>
-                    <p class="mt-4 text-gray-600 dark:text-gray-300">{{ event.description }}</p>
-                    <div class="mt-6">
-                        <button *ngIf="event.registrationRequired"
-                            class="w-full px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200">
-                            Register Now
-                        </button>
-                        <button *ngIf="!event.registrationRequired"
-                            class="w-full px-4 py-2 bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200">
-                            Learn More
-                        </button>
-                    </div>
-                </div>
+    @if (featuredEvent(); as event) {
+      <div [class.hidden]="selectedCategory() !== 'all' && selectedCategory() !== event.category.toLowerCase()">
+        <h2 class="text-3xl font-bold text-center mb-8 text-primary-900 dark:text-primary-200">Next Upcoming Event</h2>
+        <div class="grid lg:grid-cols-2 gap-8 bg-white dark:bg-gray-900 rounded-lg shadow-2xl overflow-hidden">
+          <img [src]="event.image" [alt]="event.title" class="w-full h-full object-cover min-h-[300px]">
+          <div class="p-8 flex flex-col justify-center">
+            <span class="px-3 py-1 mb-4 w-fit bg-secondary-100 text-secondary-800 text-sm font-medium rounded-full dark:bg-secondary-900/50 dark:text-secondary-300">
+              {{ event.category }}
+            </span>
+            <h3 class="text-3xl font-bold text-gray-900 dark:text-white">{{ event.title }}</h3>
+            <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">{{ event.description }}</p>
+            <div class="mt-6 space-y-3 text-gray-700 dark:text-gray-200 border-t border-gray-200 dark:border-gray-700 pt-6">
+              <p class="flex items-center"><svg class="h-5 w-5 text-primary-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg> {{ formatDate(event.date) }}</p>
+              <p class="flex items-center"><svg class="h-5 w-5 text-primary-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> {{ event.time }}</p>
+              <p class="flex items-center"><svg class="h-5 w-5 text-primary-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg> {{ event.location }}</p>
             </div>
+          </div>
         </div>
-    </div>
-</section>
+      </div>
+    }
 
-<!-- Newsletter Section -->
-<section class="py-16 bg-white dark:bg-gray-900">
-    <div class="container mx-auto px-4">
-        <div class="max-w-3xl mx-auto text-center">
-            <h2
-                class="text-3xl font-bold mb-6 bg-gradient-to-r from-primary-600 to-accent-500 bg-clip-text text-transparent">
-                Stay Updated
-            </h2>
-            <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
-                Subscribe to our newsletter to receive updates about upcoming events and activities.
-            </p>
-            <form class="flex flex-col md:flex-row gap-4 justify-center">
-                <input type="email" placeholder="Enter your email"
-                    class="px-6 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500">
-                <button type="submit"
-                    class="px-8 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200">
-                    Subscribe
-                </button>
-            </form>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      @for (event of filteredGridEvents(); track event.title) {
+        <div class="bg-white dark:bg-gray-900 rounded-lg shadow-lg overflow-hidden flex flex-col group">
+          <img [src]="event.image" [alt]="event.title" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="p-6 flex-grow flex flex-col">
+            <div class="flex items-start space-x-4">
+              <div class="flex-shrink-0 text-center bg-secondary-50 dark:bg-secondary-900/30 rounded-lg p-3 w-20">
+                <p class="text-secondary-600 dark:text-secondary-400 text-sm font-bold uppercase">{{ event.date | date:'MMM' }}</p>
+                <p class="text-gray-800 dark:text-white text-3xl font-bold">{{ event.date | date:'d' }}</p>
+              </div>
+              <div class="flex-1">
+                <span class="px-2 py-1 text-xs font-semibold bg-primary-100 text-primary-800 rounded-full dark:bg-primary-900/50 dark:text-primary-300">{{ event.category }}</span>
+                <h3 class="mt-2 text-xl font-bold text-gray-900 dark:text-white">{{ event.title }}</h3>
+              </div>
+            </div>
+            <p class="mt-4 text-gray-600 dark:text-gray-300 text-sm flex-grow">{{ event.description }}</p>
+            <div class="mt-6">
+              @if (event.registrationRequired) {
+                <button class="w-full px-4 py-2 bg-secondary-600 text-white rounded-md hover:bg-secondary-700 transition-colors">Register Now</button>
+              } @else {
+                <button class="w-full px-4 py-2 bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">Learn More</button>
+              }
+            </div>
+          </div>
         </div>
+      }
     </div>
+
+  </div>
 </section>
+} @else {
+  <div class="container mx-auto px-6 py-20 animate-pulse">
+    <div class="h-8 w-1/3 mx-auto bg-gray-300 dark:bg-gray-700 rounded mb-16"></div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      @for (item of [1,2,3,4,5,6]; track item) {
+        <div class="bg-white dark:bg-gray-900 rounded-lg shadow-lg overflow-hidden">
+          <div class="h-48 bg-gray-300 dark:bg-gray-700"></div>
+          <div class="p-6 space-y-4">
+            <div class="h-6 w-3/4 bg-gray-300 dark:bg-gray-700 rounded"></div>
+            <div class="h-4 w-1/2 bg-gray-300 dark:bg-gray-700 rounded"></div>
+            <div class="h-10 w-full bg-gray-300 dark:bg-gray-700 rounded-md"></div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+}

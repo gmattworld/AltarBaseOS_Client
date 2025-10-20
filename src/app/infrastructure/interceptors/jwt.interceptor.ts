@@ -11,18 +11,11 @@ export const JWTInterceptor: HttpInterceptorFn = (req, next) => {
   const isApiUrl = req.url.startsWith(environment.API_BASE_URL);
 
   if (isApiUrl) {
-    // req = req.clone({
-    //   setHeaders: {
-    //     "x-api-key": environment.API_KEY
-    //   }
-    // });
-    if (isLoggedIn) {
-      req = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${currentUser.access_token}`,
-        },
-      });
-    }
+    req = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${environment.TENANT_PUBLIC_KEY}`,
+      },
+    });
   }
 
   return next(req).pipe(

@@ -38,7 +38,7 @@ export const environment = {
   },
 
   // AltarBase Config
-  API_BASE_URL: 'http://127.0.0.1:8087/api',
-  TENANT_PUBLIC_KEY: 'f65c6575-acb0-4bd2-87a2-1a00d5d9eede',
+  API_BASE_URL: 'http://127.0.0.1:5074/api',
+  TENANT_PUBLIC_KEY: '01K5MVZDTVDGJEBRH9Y5FMSRG6',
   TENANT_SECRET_KEY: 'af347116-d602-4303-9cf8-7f3c0785f526',
 };

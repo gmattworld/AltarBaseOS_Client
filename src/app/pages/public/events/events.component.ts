@@ -1,96 +1,83 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, inject, signal, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+// In a real app, this service would fetch events from a database.
+import { EventsService } from '../../../infrastructure/services/events.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+
+// --- Data Models for Type Safety ---
+interface ChurchEvent {
+  title: string;
+  date: Date; // Using Date objects is more robust than strings
+  time: string;
+  location: string;
+  description: string;
+  category: 'Outreach' | 'Youth' | 'Family' | 'Fellowship';
+  image: string;
+  registrationRequired: boolean;
+}
+
+interface Category {
+  id: string;
+  name: string;
+}
 
 @Component({
   selector: 'app-events',
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './events.component.html',
-  styleUrl: './events.component.scss',
+  styleUrls: ['./events.component.scss'],
 })
-export class EventsComponent implements OnInit {
-  // Upcoming Events
-  upcomingEvents = [
-    {
-      title: 'Community Outreach Day',
-      date: '2024-04-15',
-      time: '9:00 AM - 2:00 PM',
-      location: 'Church Campus',
-      description:
-        'Join us as we serve our local community through various outreach activities.',
-      category: 'Outreach',
-      image: 'assets/images/events/outreach.jpg',
-      registrationRequired: true,
-    },
-    {
-      title: 'Youth Conference',
-      date: '2024-05-01',
-      time: 'All Day',
-      location: 'Conference Center',
-      description:
-        'A day of worship, fellowship, and spiritual growth for our youth.',
-      category: 'Youth',
-      image: 'assets/images/events/youth-conference.jpg',
-      registrationRequired: true,
-    },
-    {
-      title: 'Family Movie Night',
-      date: '2024-05-15',
-      time: '6:00 PM - 9:00 PM',
-      location: 'Fellowship Hall',
-      description:
-        'Bring the whole family for a fun evening of entertainment and fellowship.',
-      category: 'Family',
-      image: 'assets/images/events/movie-night.jpg',
-      registrationRequired: false,
-    },
-    {
-      title: 'Prayer Breakfast',
-      date: '2024-06-01',
-      time: '8:00 AM - 10:00 AM',
-      location: 'Church Hall',
-      description: 'Start your day with fellowship and prayer over breakfast.',
-      category: 'Fellowship',
-      image: 'assets/images/events/prayer-breakfast.jpg',
-      registrationRequired: true,
-    },
-  ];
+export class EventsComponent {
+  // --- Service Injection & Data Fetching ---
+  private eventsService = inject(EventsService);
 
-  // Event Categories
-  categories = [
-    { id: 'all', name: 'All Events' },
-    { id: 'outreach', name: 'Outreach' },
-    { id: 'youth', name: 'Youth' },
-    { id: 'family', name: 'Family' },
-    { id: 'fellowship', name: 'Fellowship' },
-  ];
+  // Fetch all events and categories and convert them to signals.
+  public allEvents = toSignal<ChurchEvent[]>(this.eventsService.getEvents());
+  public categories = toSignal<Category[]>(this.eventsService.getCategories());
 
-  selectedCategory = 'all';
+  // --- State Management with Signals ---
+  public selectedCategory: WritableSignal<string> = signal('all');
 
-  // Filter events by category
-  get filteredEvents() {
-    if (this.selectedCategory === 'all') {
-      return this.upcomingEvents;
+  // --- Computed Signals for Derived State ---
+  // A signal that holds all events sorted by date.
+  private sortedEvents = computed(() => {
+    const now = new Date();
+    // Filter out past events and sort the remaining ones by date.
+    return this.allEvents() == undefined ? [] : this.allEvents()!
+      .filter(event => event.date >= now)
+      .sort((a, b) => a.date.getTime() - b.date.getTime());
+  });
+
+  // A signal for the single "featured" event (the next one coming up).
+  public featuredEvent = computed(() => this.sortedEvents()[0]);
+
+  // A signal for the grid of other upcoming events (all except the featured one).
+  private gridEvents = computed(() => this.sortedEvents().slice(1));
+
+  // A signal that filters the grid events based on the selected category.
+  public filteredGridEvents = computed(() => {
+    const category = this.selectedCategory();
+    const events = this.gridEvents();
+    if (category === 'all') {
+      return events;
     }
-    return this.upcomingEvents.filter(
-      (event) =>
-        event.category.toLowerCase() === this.selectedCategory.toLowerCase()
-    );
+    return events.filter(event => event.category.toLowerCase() === category);
+  });
+
+  // --- Methods ---
+  selectCategory(categoryId: string): void {
+    this.selectedCategory.set(categoryId);
   }
 
-  // Format date for display
-  formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
+  // A simple method to format dates, now accepting a Date object.
+  formatDate(date: Date): string {
+    return date.toLocaleDateString('en-GB', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
       day: 'numeric',
     });
-  }
-
-  ngOnInit(): void {
-    // Initialize any necessary data or services
   }
 }

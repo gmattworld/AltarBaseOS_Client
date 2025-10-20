@@ -1,80 +1,106 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { environment } from '../../../../environments/environment';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ConfigModel } from '../../../core/models/config.model';
+import { ConfigService } from '../../../infrastructure/services/config.service';
 import { SafePipe } from "../../../infrastructure/pipes/safe.pipe";
+import { environment } from '../../../../environments/environment';
+import { RouterModule } from '@angular/router';
+
+// --- Data Models for Type Safety ---
+interface OfficeHour {
+  day: string;
+  hours: string;
+}
+
+// --- Signal-based Form Model ---
+interface ContactForm {
+  name: WritableSignal<string>;
+  email: WritableSignal<string>;
+  subject: WritableSignal<string>;
+  message: WritableSignal<string>;
+}
 
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, SafePipe],
+  imports: [CommonModule, RouterModule, SafePipe],
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss'],
 })
 export class ContactComponent implements OnInit {
-  // Church Information
-  churchName = environment.churchName;
-  churchAddress = environment.churchAddress;
-  churchCity = environment.churchCity;
-  churchState = environment.churchState;
-  churchZip = environment.churchZip;
-  churchPhone = environment.churchPhone;
-  churchEmail = environment.churchEmail;
+  // --- Service Injection & State Management ---
+  private configService = inject(ConfigService);
+  public configData = signal<ConfigModel | null>(null);
 
-  // Contact Form
-  contactForm = {
-    name: '',
-    email: '',
-    phone: '',
-    subject: '',
-    message: '',
+  // --- Signal-based Form ---
+  public contactForm: ContactForm = {
+    name: signal(''),
+    email: signal(''),
+    subject: signal(''),
+    message: signal(''),
   };
 
-  // Contact Methods
-  contactMethods = [
-    {
-      title: 'Phone',
-      description: 'Call us directly',
-      value: this.churchPhone,
-      icon: 'M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z',
-    },
-    {
-      title: 'Email',
-      description: 'Send us an email',
-      value: this.churchEmail,
-      icon: 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
-    },
-    {
-      title: 'Address',
-      description: 'Visit us in person',
-      value: `${this.churchAddress}, ${this.churchCity}, ${this.churchState} ${this.churchZip}`,
-      icon: 'M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z',
-    },
-  ];
+  // --- Computed signal for real-time form validation ---
+  public isFormValid = computed(() => {
+    const form = this.contactForm;
+    // Basic validation: check for non-empty required fields and a valid email format.
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return form.name().trim() !== '' &&
+           emailRegex.test(form.email()) &&
+           form.subject().trim() !== '' &&
+           form.message().trim() !== '';
+  });
 
-  // Office Hours
-  officeHours = [
+  // --- Static Page Data ---
+  public officeHours = signal<OfficeHour[]>([
     { day: 'Monday - Friday', hours: '9:00 AM - 5:00 PM' },
     { day: 'Saturday', hours: '10:00 AM - 2:00 PM' },
-    { day: 'Sunday', hours: 'Closed' },
-  ];
+    { day: 'Sunday', hours: 'Closed for Worship' },
+  ]);
 
-  onSubmit() {
-    // TODO: Implement form submission
-    console.log('Form submitted:', this.contactForm);
-  }
+  // --- Computed signal for the Google Maps URL ---
+  public googleMapsUrl = computed(() => {
+    const config = this.configData();
+    if (!config) return '';
+    const address = `${config.address}, ${config.city}, ${config.state}`;
+    const apiKey = environment.googleMapsApiKey;
+    return `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${encodeURIComponent(address)}`;
+  });
 
   ngOnInit(): void {
-    // Initialize any necessary data or services
+      this.configService.getConfig().subscribe((data) => {
+        this.configData.set(data.data);
+      });
   }
 
-  // Google Maps URL
-  get googleMapsUrl(): string {
-    const address = `${this.churchAddress}, ${this.churchCity}, ${this.churchState} ${this.churchZip}`;
-    const apiKey = environment.googleMapsApiKey;
-    return `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${encodeURIComponent(
-      address
-    )}`;
+  // --- Form Submission Logic ---
+  onSubmit() {
+    if (!this.isFormValid()) {
+      console.error('Form is invalid. Submission blocked.');
+      return;
+    }
+    // TODO: Implement actual form submission logic (e.g., HTTP POST request)
+    console.log('Form Submitted:', {
+      name: this.contactForm.name(),
+      email: this.contactForm.email(),
+      subject: this.contactForm.subject(),
+      message: this.contactForm.message(),
+    });
+    // Optionally reset form after submission
+    this.resetForm();
+  }
+
+  private resetForm(): void {
+    this.contactForm.name.set('');
+    this.contactForm.email.set('');
+    this.contactForm.subject.set('');
+    this.contactForm.message.set('');
+  }
+
+  // Helper to handle input changes for signal-based forms
+  onInputChange(field: WritableSignal<string>, event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    field.set(inputElement.value);
   }
 }

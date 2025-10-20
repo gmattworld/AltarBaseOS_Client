@@ -17,54 +17,59 @@ html {
 }/* You can add global styles to this file, and also import other style files */
 @custom-variant dark (&:where(.dark, .dark *));
 @theme {
-    --color-primary: #152598;
-    --color-primary-light: #2538C7;
-    --color-primary-dark: #0F1B72;
-    --color-secondary: #D836C1;
-    --color-secondary-light: #E869D9;
-    --color-secondary-dark: #A62997;
-    --color-accent: #8B35B3;
-    --color-accent-light: #B369D9;
-    --color-accent-dark: #6A298C;
+    /* * RCCG Official Color Palette (Extracted from Logo)
+     * Primary: Deep Green (#007B3E) - For main branding, text.
+     * Secondary: Vibrant Red (#E62A29) - For borders, calls-to-action.
+     * Accent: Dark Royal Blue (#262261) - For backgrounds, distinct sections.
+    */
+    --color-primary: #007B3E;
+    --color-primary-light: #009E50;
+    --color-primary-dark: #006431;
+    --color-secondary: #E62A29;
+    --color-secondary-light: #EC5554;
+    --color-secondary-dark: #C91A19;
+    --color-accent: #262261;
+    --color-accent-light: #39348A;
+    --color-accent-dark: #1B184B;
 
-    // Primary Colors - Deep Blue (#152598)
-    --color-primary-50: #eef2ff;
-    --color-primary-100: #e0e7ff;
-    --color-primary-200: #c7d2fe;
-    --color-primary-300: #a5b4fc;
-    --color-primary-400: #818cf8;
-    --color-primary-500: #152598;
-    --color-primary-600: #0f1b72;
-    --color-primary-700: #0a1357;
-    --color-primary-800: #050b3c;
-    --color-primary-900: #020521;
-    --color-primary-950: #010210;
+    // Primary Colors - Deep Green (#007B3E)
+    --color-primary-50: #e5f2ec;
+    --color-primary-100: #cce6d8;
+    --color-primary-200: #99cdae;
+    --color-primary-300: #66b587;
+    --color-primary-400: #339c5f;
+    --color-primary-500: #007B3E;
+    --color-primary-600: #006431;
+    --color-primary-700: #004d25;
+    --color-primary-800: #003519;
+    --color-primary-900: #001e0d;
+    --color-primary-950: #000f07;
 
-    // Secondary Colors - Vibrant Pink (#D836C1)
-    --color-secondary-50: #fdf2f8;
-    --color-secondary-100: #fce7f3;
-    --color-secondary-200: #fbcfe8;
-    --color-secondary-300: #f9a8d4;
-    --color-secondary-400: #f472b6;
-    --color-secondary-500: #D836C1;
-    --color-secondary-600: #b91c9f;
-    --color-secondary-700: #99167e;
-    --color-secondary-800: #7a115f;
-    --color-secondary-900: #5c0c42;
-    --color-secondary-950: #3d0729;
+    // Secondary Colors - Vibrant Red (#E62A29)
+    --color-secondary-50: #feeaea;
+    --color-secondary-100: #fdd5d4;
+    --color-secondary-200: #fbaaa9;
+    --color-secondary-300: #f87e7d;
+    --color-secondary-400: #f15352;
+    --color-secondary-500: #E62A29;
+    --color-secondary-600: #c91a19;
+    --color-secondary-700: #9b1413;
+    --color-secondary-800: #6d0e0d;
+    --color-secondary-900: #3e0807;
+    --color-secondary-950: #240504;
 
-    // Accent Colors - Rich Purple (#8B35B3)
-    --color-accent-50: #faf5ff;
-    --color-accent-100: #f3e8ff;
-    --color-accent-200: #e9d5ff;
-    --color-accent-300: #d8b4fe;
-    --color-accent-400: #c084fc;
-    --color-accent-500: #8B35B3;
-    --color-accent-600: #7c2d9f;
-    --color-accent-700: #6d258b;
-    --color-accent-800: #5e1d77;
-    --color-accent-900: #4f1563;
-    --color-accent-950: #400d4f;
+    /* Accent Colors - Base: Deep Violet (#230e6f) */
+    --color-accent-50: #eceafe;
+    --color-accent-100: #ded8fb;
+    --color-accent-200: #bfb5f6;
+    --color-accent-300: #9f91f2;
+    --color-accent-400: #7f6dee;
+    --color-accent-500: #230e6f;
+    --color-accent-600: #1e0c5f;
+    --color-accent-700: #190a4f;
+    --color-accent-800: #14083f;
+    --color-accent-900: #0f062f;
+    --color-accent-950: #0a0420;
 }
 
 @layer base {

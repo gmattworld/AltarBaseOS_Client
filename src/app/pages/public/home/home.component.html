@@ -1,235 +1,148 @@
-<!-- Hero Section -->
-<section class="relative h-[80vh] flex items-center justify-center overflow-hidden">
-  <!-- Background Image with Overlay -->
+@if (configData(); as config) {
+<section class="relative h-[90vh] flex items-center justify-center text-center text-white overflow-hidden">
   <div class="absolute inset-0 z-0">
-    <img src="assets/images/church-hero.jpg" alt="Church" class="w-full h-full object-cover">
-    <div class="absolute inset-0 bg-gradient-to-r from-primary-900/80 to-accent-900/80"></div>
+    <img src="assets/images/rccg-hero.jpg" alt="Joyful congregation worshiping" class="w-full h-full object-cover">
+    <div class="absolute inset-0 bg-gradient-to-tr from-primary-900/80 via-accent-800/70 to-secondary-700/60"></div>
   </div>
 
-  <!-- Content -->
-  <div class="relative z-10 text-center text-white px-4">
-    <h1
-      class="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-gray-100 bg-clip-text text-transparent">
-      Welcome to {{ churchName }}
+  <div class="relative z-10 px-4 animate-fade-in-up">
+    <h1 class="text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">
+      Welcome to {{ config.name }}
     </h1>
-    <p class="text-xl md:text-2xl mb-8 text-gray-200">
-      A place of worship, community, and spiritual growth
+    <p class="text-lg md:text-xl max-w-3xl mx-auto text-gray-200">
+      A home of peace, love, and spiritual transformation. Join us to experience the power of God.
     </p>
-    <div class="space-y-4 md:space-y-0 md:space-x-4">
-      <a routerLink="/about"
-        class="inline-block px-8 py-3 bg-secondary-500 hover:bg-secondary-600 text-white rounded-lg transition-colors duration-200">
-        Learn More
+    <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a routerLink="/connect"
+        class="inline-block w-full sm:w-auto px-8 py-3 bg-white text-primary-800 font-semibold rounded-full shadow-lg hover:bg-gray-200 transform hover:-translate-y-1 transition-all duration-300">
+        Get Connected
       </a>
-      <a routerLink="/contact"
-        class="inline-block px-8 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg backdrop-blur-sm transition-colors duration-200">
-        Contact Us
+      <a routerLink="/sermons"
+        class="inline-block w-full sm:w-auto px-8 py-3 bg-transparent border-2 border-white text-white font-semibold rounded-full hover:bg-white/20 backdrop-blur-sm transition-colors duration-300">
+        Watch Latest Sermon
       </a>
     </div>
   </div>
 </section>
+} @else {
+<div class="h-[90vh] bg-gray-200 dark:bg-gray-800 animate-pulse"></div>
+}
 
-<!-- Mission Statement -->
-<section class="py-16 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
-  <div class="container mx-auto px-4">
-    <div class="grid md:grid-cols-2 gap-8 items-center">
-      <!-- Mission Statement -->
+@if (configData(); as config) {
+<section class="py-20 bg-white dark:bg-gray-900">
+  <div class="container mx-auto px-6">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div class="rounded-lg overflow-hidden shadow-2xl">
+        <img src="assets/images/pastor-welcome.jpg" alt="Lead Pastor of the Church" class="w-full h-auto object-cover">
+      </div>
       <div class="text-left">
-        <h2
-          class="text-3xl font-bold mb-6 bg-gradient-to-r from-primary-600 to-accent-500 bg-clip-text text-transparent">
-          Our Mission
-        </h2>
-        <p class="text-xl text-gray-600 dark:text-gray-300 mb-6">
-          To spread the love of Christ, build a community of faith, and serve our neighbors with compassion and grace.
+        <h2 class="text-3xl font-bold mb-4 text-primary-900 dark:text-primary-300">A Word from Our Pastor</h2>
+        <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">
+          {{ config.pastorWelcomeMessage }}
         </p>
-        <div class="space-y-4">
-          <div class="flex items-start space-x-3">
-            <svg class="h-6 w-6 text-primary-600 dark:text-primary-400 mt-1" fill="none" stroke="currentColor"
-              viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <div>
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Faith & Worship</h3>
-              <p class="text-gray-600 dark:text-gray-300">Growing together in faith through worship and prayer</p>
-            </div>
-          </div>
-          <div class="flex items-start space-x-3">
-            <svg class="h-6 w-6 text-primary-600 dark:text-primary-400 mt-1" fill="none" stroke="currentColor"
-              viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
-            <div>
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Community</h3>
-              <p class="text-gray-600 dark:text-gray-300">Building lasting relationships and supporting one another</p>
-            </div>
-          </div>
-          <div class="flex items-start space-x-3">
-            <svg class="h-6 w-6 text-primary-600 dark:text-primary-400 mt-1" fill="none" stroke="currentColor"
-              viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-            </svg>
-            <div>
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Service</h3>
-              <p class="text-gray-600 dark:text-gray-300">Making a difference in our community through acts of service
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Video Player -->
-      <div class="relative rounded-xl overflow-hidden shadow-xl">
-        <div class="aspect-w-16 aspect-h-9">
-          <iframe class="w-full h-full" [src]="'https://www.youtube.com/embed/YOUR_VIDEO_ID' | safe"
-            title="Welcome Message from Our Minister"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
-          </iframe>
-        </div>
-        <div
-          class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300">
-          <div class="absolute bottom-0 left-0 right-0 p-4">
-            <h3 class="text-white text-lg font-semibold">Welcome Message from Our Minister</h3>
-            <p class="text-gray-200 text-sm">Watch our minister's special message to the community</p>
-          </div>
-        </div>
+        <p class="text-xl font-semibold text-gray-800 dark:text-white">- {{ config.pastorName }}</p>
+        <p class="text-md text-gray-500 dark:text-gray-400">Lead Pastor</p>
       </div>
     </div>
   </div>
 </section>
+}
 
-<!-- Service Times Section -->
-<section class="py-16 bg-gray-50 dark:bg-gray-800">
-  <div class="container mx-auto px-4">
-    <h2
-      class="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-primary-600 to-accent-500 bg-clip-text text-transparent">
-      Service Times
-    </h2>
-    <div class="grid md:grid-cols-3 gap-8">
-      <div *ngFor="let service of weeklySchedule"
-        class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-200">
-        <div class="text-center">
-          <h3 class="text-xl font-semibold text-primary-600 dark:text-primary-400 mb-2">{{ service.day }}</h3>
-          <p class="text-2xl font-bold text-gray-900 dark:text-white mb-1">{{ service.time }}</p>
-          <p class="text-gray-600 dark:text-gray-300">{{ service.type }}</p>
-        </div>
+<section class="py-20 bg-gray-50 dark:bg-gray-800">
+  <div class="container mx-auto px-6 text-center">
+    <h2 class="text-3xl font-bold mb-2 text-primary-900 dark:text-primary-300">Join Our Services</h2>
+    <p class="text-lg text-gray-600 dark:text-gray-400 mb-12">Experience heartfelt worship and an inspiring message.</p>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      @for (service of weeklySchedule(); track service.day + service.type) {
+      <div
+        class="bg-white dark:bg-gray-700 rounded-lg p-6 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+        <h3 class="text-xl font-semibold text-secondary-600 dark:text-secondary-400 mb-2">{{ service.day }}</h3>
+        <p class="text-3xl font-bold text-gray-800 dark:text-white mb-1">{{ service.time }}</p>
+        <p class="text-gray-500 dark:text-gray-300">{{ service.type }}</p>
       </div>
+      }
     </div>
   </div>
 </section>
 
-<!-- Ministries Section -->
-<section class="py-16 bg-white dark:bg-gray-900">
-  <div class="container mx-auto px-4">
-    <h2
-      class="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-primary-600 to-accent-500 bg-clip-text text-transparent">
-      Our Ministries
-    </h2>
+<section class="py-20 bg-white dark:bg-gray-900">
+  <div class="container mx-auto px-6 text-center">
+    <h2 class="text-3xl font-bold mb-2 text-primary-900 dark:text-primary-300">Our Ministries</h2>
+    <p class="text-lg text-gray-600 dark:text-gray-400 mb-12">Find your place and grow with a community that cares.</p>
     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-      <div *ngFor="let ministry of ministries"
-        class="group bg-gray-50 dark:bg-gray-800 rounded-xl p-6 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors duration-200">
-        <div class="text-primary-600 dark:text-primary-400 mb-4">
-          <svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      @for (ministry of ministries(); track ministry.title) {
+      <div
+        class="group bg-gray-50 dark:bg-gray-800 rounded-lg p-6 text-left hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-colors duration-300">
+        <div class="text-secondary-600 dark:text-secondary-400 mb-4">
+          <svg class="h-10 w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="ministry.icon" />
           </svg>
         </div>
         <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{{ ministry.title }}</h3>
         <p class="text-gray-600 dark:text-gray-300">{{ ministry.description }}</p>
       </div>
+      }
     </div>
   </div>
 </section>
 
-<!-- Upcoming Events Section -->
-<section class="py-16 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
-  <div class="container mx-auto px-4">
-    <h2
-      class="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-primary-600 to-accent-500 bg-clip-text text-transparent">
-      Upcoming Events
-    </h2>
-    <div class="grid md:grid-cols-2 gap-8">
-      <div *ngFor="let event of upcomingEvents"
-        class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-200">
-        <div class="flex items-start space-x-4">
-          <div class="flex-shrink-0">
-            <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
-              <svg class="h-8 w-8 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor"
-                viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-            </div>
-          </div>
-          <div>
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-1">{{ event.title }}</h3>
-            <p class="text-gray-600 dark:text-gray-300 mb-2">{{ event.date }} at {{ event.time }}</p>
-            <p class="text-gray-500 dark:text-gray-400">{{ event.description }}</p>
-          </div>
+<section class="py-20 bg-gray-50 dark:bg-gray-800">
+  <div class="container mx-auto px-6">
+    <h2 class="text-3xl font-bold text-center mb-12 text-primary-900 dark:text-primary-300">Upcoming Events</h2>
+    <div class="max-w-4xl mx-auto space-y-6">
+      @for (event of upcomingEvents(); track event.title) {
+      <div
+        class="bg-white dark:bg-gray-700 rounded-lg p-6 shadow-md hover:shadow-xl transition-shadow duration-300 flex items-center space-x-6">
+        <div class="flex-shrink-0 text-center bg-secondary-50 dark:bg-secondary-900/30 rounded-lg p-3 w-24">
+          <p class="text-secondary-600 dark:text-secondary-400 text-sm font-bold uppercase">
+            {{ event.date | date: 'MMM' }}
+          </p>
+          <p class="text-gray-800 dark:text-white text-3xl font-bold">
+            {{ event.date | date: 'd' }}
+          </p>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-white">{{ event.title }}</h3>
+          <p class="text-gray-500 dark:text-gray-400 text-sm mb-2">{{ event.time }}</p>
+          <p class="text-gray-600 dark:text-gray-300">{{ event.description }}</p>
+        </div>
+      </div>
+      } @empty {
+      <div class="text-center bg-white dark:bg-gray-700 rounded-lg p-8 shadow-md">
+        <p class="text-gray-500 dark:text-gray-300">No upcoming events at the moment. Please check back soon!</p>
+      </div>
+      }
+    </div>
+  </div>
+</section>
+
+@if (configData(); as config) {
+<section class="bg-white dark:bg-gray-900">
+  <div class="grid md:grid-cols-2">
+    <div class="h-80 md:h-full">
+      <iframe [src]="googleMapsUrl() | safe" width="100%" height="100%" style="border:0;" allowfullscreen=""
+        loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Church Location Map">
+      </iframe>
+    </div>
+
+    <div class="p-12">
+      <h2 class="text-3xl font-bold text-primary-900 dark:text-primary-300 mb-6">Visit Us</h2>
+      <div class="space-y-4 text-lg">
+        <div>
+          <h3 class="font-semibold text-gray-800 dark:text-white">Address</h3>
+          <p class="text-gray-600 dark:text-gray-300">{{ config.address }}</p>
+          <p class="text-gray-600 dark:text-gray-300">{{ config.city }}, {{ config.state }}</p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-gray-800 dark:text-white">Phone</h3>
+          <p class="text-gray-600 dark:text-gray-300">{{ config.phone }}</p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-gray-800 dark:text-white">Email</h3>
+          <p class="text-gray-600 dark:text-gray-300">{{ config.email }}</p>
         </div>
       </div>
     </div>
   </div>
 </section>
-
-<!-- Location Section -->
-<section class="py-16 bg-white dark:bg-gray-900">
-  <div class="container mx-auto px-4">
-    <h2
-      class="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-primary-600 to-accent-500 bg-clip-text text-transparent">
-      Find Us
-    </h2>
-    <div class="grid md:grid-cols-2 gap-8">
-      <!-- Map -->
-      <div class="rounded-xl overflow-hidden shadow-lg">
-        <iframe [src]="googleMapsUrl | safe" width="100%" height="400" style="border:0;" allowfullscreen=""
-          loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Church Location Map">
-        </iframe>
-      </div>
-
-      <!-- Contact Info -->
-      <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
-        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Contact Information</h3>
-        <div class="space-y-4">
-          <div class="flex items-start space-x-3">
-            <svg class="h-6 w-6 text-primary-600 dark:text-primary-400 mt-1" fill="none" stroke="currentColor"
-              viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            <div>
-              <p class="text-gray-900 dark:text-white font-medium">Address</p>
-              <p class="text-gray-600 dark:text-gray-300">{{ churchAddress }}</p>
-              <p class="text-gray-600 dark:text-gray-300">{{ churchCity }}, {{ churchState }} {{ churchZip }}</p>
-            </div>
-          </div>
-          <div class="flex items-start space-x-3">
-            <svg class="h-6 w-6 text-primary-600 dark:text-primary-400 mt-1" fill="none" stroke="currentColor"
-              viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-            </svg>
-            <div>
-              <p class="text-gray-900 dark:text-white font-medium">Phone</p>
-              <p class="text-gray-600 dark:text-gray-300">{{ churchPhone }}</p>
-            </div>
-          </div>
-          <div class="flex items-start space-x-3">
-            <svg class="h-6 w-6 text-primary-600 dark:text-primary-400 mt-1" fill="none" stroke="currentColor"
-              viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-            <div>
-              <p class="text-gray-900 dark:text-white font-medium">Email</p>
-              <p class="text-gray-600 dark:text-gray-300">{{ churchEmail }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+}
