@@ -17,6 +17,7 @@ export interface ConfigModel {
     aboutContent: string;
     serviceTimes: string;
     pastorName: string;
+    pastorRole: string;
     foundedYear: number;
     denomination: string;
     socialMedia: {
@@ -30,5 +31,7 @@ export interface ConfigModel {
 
 
     youtubeVideoId: string;
-    pastorWelcomeMessage: string;
+    welcomeMessageTitle: string;
+    welcomeMessage: string;
+    welcomeMessageBannerUrl: string;
 } 

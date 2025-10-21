@@ -20,6 +20,11 @@ export const PublicRoutes: Routes = [
           import('./about/about.component').then((m) => m.AboutComponent),
       },
       {
+        path: 'sermons',
+        loadComponent: () =>
+          import('./sermons/sermons.component').then((m) => m.SermonsComponent),
+      },
+      {
         path: 'services',
         loadComponent: () =>
           import('./services/services.component').then(

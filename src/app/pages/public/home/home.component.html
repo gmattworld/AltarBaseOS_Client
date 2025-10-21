@@ -1,148 +1,150 @@
-@if (configData(); as config) {
-<section class="relative h-[90vh] flex items-center justify-center text-center text-white overflow-hidden">
-  <div class="absolute inset-0 z-0">
-    <img src="assets/images/rccg-hero.jpg" alt="Joyful congregation worshiping" class="w-full h-full object-cover">
-    <div class="absolute inset-0 bg-gradient-to-tr from-primary-900/80 via-accent-800/70 to-secondary-700/60"></div>
-  </div>
-
-  <div class="relative z-10 px-4 animate-fade-in-up">
-    <h1 class="text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">
-      Welcome to {{ config.name }}
-    </h1>
-    <p class="text-lg md:text-xl max-w-3xl mx-auto text-gray-200">
-      A home of peace, love, and spiritual transformation. Join us to experience the power of God.
-    </p>
-    <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-      <a routerLink="/connect"
-        class="inline-block w-full sm:w-auto px-8 py-3 bg-white text-primary-800 font-semibold rounded-full shadow-lg hover:bg-gray-200 transform hover:-translate-y-1 transition-all duration-300">
-        Get Connected
-      </a>
-      <a routerLink="/sermons"
-        class="inline-block w-full sm:w-auto px-8 py-3 bg-transparent border-2 border-white text-white font-semibold rounded-full hover:bg-white/20 backdrop-blur-sm transition-colors duration-300">
-        Watch Latest Sermon
-      </a>
-    </div>
-  </div>
-</section>
-} @else {
-<div class="h-[90vh] bg-gray-200 dark:bg-gray-800 animate-pulse"></div>
-}
-
-@if (configData(); as config) {
-<section class="py-20 bg-white dark:bg-gray-900">
-  <div class="container mx-auto px-6">
-    <div class="grid md:grid-cols-2 gap-12 items-center">
-      <div class="rounded-lg overflow-hidden shadow-2xl">
-        <img src="assets/images/pastor-welcome.jpg" alt="Lead Pastor of the Church" class="w-full h-auto object-cover">
+<section>
+  @if (configData(); as config) {
+    <section class="relative h-[90vh] flex items-center justify-center text-center text-white overflow-hidden">
+      <div class="absolute inset-0 z-0">
+        <img src="{{ config.heroImageUrl == null || config.heroImageUrl == '' ?  'assets/images/rccg-hero.jpg' : config.heroImageUrl }}" alt="Joyful congregation worshiping" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-tr from-primary-900/80 via-accent-800/70 to-secondary-700/60"></div>
       </div>
-      <div class="text-left">
-        <h2 class="text-3xl font-bold mb-4 text-primary-900 dark:text-primary-300">A Word from Our Pastor</h2>
-        <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">
-          {{ config.pastorWelcomeMessage }}
+
+      <div class="relative z-10 px-4 animate-fade-in-up">
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">
+          Welcome to {{ config.name }}
+        </h1>
+        <p class="text-lg md:text-xl max-w-3xl mx-auto text-gray-200">
+          {{ config.description }}
         </p>
-        <p class="text-xl font-semibold text-gray-800 dark:text-white">- {{ config.pastorName }}</p>
-        <p class="text-md text-gray-500 dark:text-gray-400">Lead Pastor</p>
+        <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a routerLink="/contact"
+            class="inline-block w-full sm:w-auto px-8 py-3 bg-white text-primary-800 font-semibold rounded-full shadow-lg hover:bg-gray-200 transform hover:-translate-y-1 transition-all duration-300">
+            Get Connected
+          </a>
+          <a routerLink="/sermons"
+            class="inline-block w-full sm:w-auto px-8 py-3 bg-transparent border-2 border-white text-white font-semibold rounded-full hover:bg-white/20 backdrop-blur-sm transition-colors duration-300">
+            Watch Latest Sermon
+          </a>
+        </div>
       </div>
-    </div>
-  </div>
-</section>
-}
+    </section>
+    } @else {
+    <div class="h-[90vh] bg-gray-200 dark:bg-gray-800 animate-pulse"></div>
+    }
 
-<section class="py-20 bg-gray-50 dark:bg-gray-800">
-  <div class="container mx-auto px-6 text-center">
-    <h2 class="text-3xl font-bold mb-2 text-primary-900 dark:text-primary-300">Join Our Services</h2>
-    <p class="text-lg text-gray-600 dark:text-gray-400 mb-12">Experience heartfelt worship and an inspiring message.</p>
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-      @for (service of weeklySchedule(); track service.day + service.type) {
-      <div
-        class="bg-white dark:bg-gray-700 rounded-lg p-6 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-        <h3 class="text-xl font-semibold text-secondary-600 dark:text-secondary-400 mb-2">{{ service.day }}</h3>
-        <p class="text-3xl font-bold text-gray-800 dark:text-white mb-1">{{ service.time }}</p>
-        <p class="text-gray-500 dark:text-gray-300">{{ service.type }}</p>
+    @if (configData(); as config) {
+    <section class="py-20 bg-white dark:bg-gray-900">
+      <div class="container mx-auto px-6">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+          <div class="rounded-lg overflow-hidden shadow-2xl">
+            <img src="{{ config.welcomeMessageBannerUrl == null || config.welcomeMessageBannerUrl == '' ?  'assets/images/welcome_banner.png' : config.welcomeMessageBannerUrl }}" alt="Welcome to church" class="w-full h-auto object-cover">
+          </div>
+          <div class="text-left">
+            <h2 class="text-3xl font-bold mb-4 text-primary-900 dark:text-primary-300">{{ config.welcomeMessageTitle }}</h2>
+            <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">
+              {{ config.welcomeMessage }}
+            </p>
+            <p class="text-xl font-semibold text-gray-800 dark:text-white">- {{ config.pastorName }}</p>
+            <p class="text-md text-gray-500 dark:text-gray-400">{{ config.pastorRole }}</p>
+          </div>
+        </div>
       </div>
-      }
-    </div>
-  </div>
-</section>
+    </section>
+    }
 
-<section class="py-20 bg-white dark:bg-gray-900">
-  <div class="container mx-auto px-6 text-center">
-    <h2 class="text-3xl font-bold mb-2 text-primary-900 dark:text-primary-300">Our Ministries</h2>
-    <p class="text-lg text-gray-600 dark:text-gray-400 mb-12">Find your place and grow with a community that cares.</p>
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-      @for (ministry of ministries(); track ministry.title) {
-      <div
-        class="group bg-gray-50 dark:bg-gray-800 rounded-lg p-6 text-left hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-colors duration-300">
-        <div class="text-secondary-600 dark:text-secondary-400 mb-4">
-          <svg class="h-10 w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="ministry.icon" />
-          </svg>
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+      <div class="container mx-auto px-6 text-center">
+        <h2 class="text-3xl font-bold mb-2 text-primary-900 dark:text-primary-300">Join Our Services</h2>
+        <p class="text-lg text-gray-600 dark:text-gray-400 mb-12">Experience heartfelt worship and an inspiring message.</p>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          @for (service of weeklySchedule(); track service.day + service.type) {
+          <div
+            class="bg-white dark:bg-gray-700 rounded-lg p-6 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+            <h3 class="text-xl font-semibold text-secondary-600 dark:text-secondary-400 mb-2">{{ service.day }}</h3>
+            <p class="text-3xl font-bold text-gray-800 dark:text-white mb-1">{{ service.time }}</p>
+            <p class="text-gray-500 dark:text-gray-300">{{ service.type }}</p>
+          </div>
+          }
         </div>
-        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{{ ministry.title }}</h3>
-        <p class="text-gray-600 dark:text-gray-300">{{ ministry.description }}</p>
       </div>
-      }
-    </div>
-  </div>
-</section>
+    </section>
 
-<section class="py-20 bg-gray-50 dark:bg-gray-800">
-  <div class="container mx-auto px-6">
-    <h2 class="text-3xl font-bold text-center mb-12 text-primary-900 dark:text-primary-300">Upcoming Events</h2>
-    <div class="max-w-4xl mx-auto space-y-6">
-      @for (event of upcomingEvents(); track event.title) {
-      <div
-        class="bg-white dark:bg-gray-700 rounded-lg p-6 shadow-md hover:shadow-xl transition-shadow duration-300 flex items-center space-x-6">
-        <div class="flex-shrink-0 text-center bg-secondary-50 dark:bg-secondary-900/30 rounded-lg p-3 w-24">
-          <p class="text-secondary-600 dark:text-secondary-400 text-sm font-bold uppercase">
-            {{ event.date | date: 'MMM' }}
-          </p>
-          <p class="text-gray-800 dark:text-white text-3xl font-bold">
-            {{ event.date | date: 'd' }}
-          </p>
-        </div>
-        <div>
-          <h3 class="text-xl font-semibold text-gray-900 dark:text-white">{{ event.title }}</h3>
-          <p class="text-gray-500 dark:text-gray-400 text-sm mb-2">{{ event.time }}</p>
-          <p class="text-gray-600 dark:text-gray-300">{{ event.description }}</p>
+    <section class="py-20 bg-white dark:bg-gray-900">
+      <div class="container mx-auto px-6 text-center">
+        <h2 class="text-3xl font-bold mb-2 text-primary-900 dark:text-primary-300">Our Ministries</h2>
+        <p class="text-lg text-gray-600 dark:text-gray-400 mb-12">Find your place and grow with a community that cares.</p>
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          @for (ministry of ministries(); track ministry.title) {
+          <div
+            class="group bg-gray-50 dark:bg-gray-800 rounded-lg p-6 text-left hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-colors duration-300">
+            <div class="text-secondary-600 dark:text-secondary-400 mb-4">
+              <svg class="h-10 w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="ministry.icon" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{{ ministry.title }}</h3>
+            <p class="text-gray-600 dark:text-gray-300">{{ ministry.description }}</p>
+          </div>
+          }
         </div>
       </div>
-      } @empty {
-      <div class="text-center bg-white dark:bg-gray-700 rounded-lg p-8 shadow-md">
-        <p class="text-gray-500 dark:text-gray-300">No upcoming events at the moment. Please check back soon!</p>
-      </div>
-      }
-    </div>
-  </div>
-</section>
+    </section>
 
-@if (configData(); as config) {
-<section class="bg-white dark:bg-gray-900">
-  <div class="grid md:grid-cols-2">
-    <div class="h-80 md:h-full">
-      <iframe [src]="googleMapsUrl() | safe" width="100%" height="100%" style="border:0;" allowfullscreen=""
-        loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Church Location Map">
-      </iframe>
-    </div>
-
-    <div class="p-12">
-      <h2 class="text-3xl font-bold text-primary-900 dark:text-primary-300 mb-6">Visit Us</h2>
-      <div class="space-y-4 text-lg">
-        <div>
-          <h3 class="font-semibold text-gray-800 dark:text-white">Address</h3>
-          <p class="text-gray-600 dark:text-gray-300">{{ config.address }}</p>
-          <p class="text-gray-600 dark:text-gray-300">{{ config.city }}, {{ config.state }}</p>
-        </div>
-        <div>
-          <h3 class="font-semibold text-gray-800 dark:text-white">Phone</h3>
-          <p class="text-gray-600 dark:text-gray-300">{{ config.phone }}</p>
-        </div>
-        <div>
-          <h3 class="font-semibold text-gray-800 dark:text-white">Email</h3>
-          <p class="text-gray-600 dark:text-gray-300">{{ config.email }}</p>
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+      <div class="container mx-auto px-6">
+        <h2 class="text-3xl font-bold text-center mb-12 text-primary-900 dark:text-primary-300">Upcoming Events</h2>
+        <div class="max-w-4xl mx-auto space-y-6">
+          @for (event of upcomingEvents(); track event.title) {
+          <div
+            class="bg-white dark:bg-gray-700 rounded-lg p-6 shadow-md hover:shadow-xl transition-shadow duration-300 flex items-center space-x-6">
+            <div class="flex-shrink-0 text-center bg-secondary-50 dark:bg-secondary-900/30 rounded-lg p-3 w-24">
+              <p class="text-secondary-600 dark:text-secondary-400 text-sm font-bold uppercase">
+                {{ event.date | date: 'MMM' }}
+              </p>
+              <p class="text-gray-800 dark:text-white text-3xl font-bold">
+                {{ event.date | date: 'd' }}
+              </p>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-gray-900 dark:text-white">{{ event.title }}</h3>
+              <p class="text-gray-500 dark:text-gray-400 text-sm mb-2">{{ event.time }}</p>
+              <p class="text-gray-600 dark:text-gray-300">{{ event.description }}</p>
+            </div>
+          </div>
+          } @empty {
+          <div class="text-center bg-white dark:bg-gray-700 rounded-lg p-8 shadow-md">
+            <p class="text-gray-500 dark:text-gray-300">No upcoming events at the moment. Please check back soon!</p>
+          </div>
+          }
         </div>
       </div>
-    </div>
-  </div>
+    </section>
+
+  @if (configData(); as config) {
+    <section class="bg-white dark:bg-gray-900">
+      <div class="grid md:grid-cols-2">
+        <div class="h-80 md:h-full">
+          <iframe [src]="googleMapsUrl() | safe" width="100%" height="100%" style="border:0;" allowfullscreen=""
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Church Location Map">
+          </iframe>
+        </div>
+
+        <div class="p-12">
+          <h2 class="text-3xl font-bold text-primary-900 dark:text-primary-300 mb-6">Visit Us</h2>
+          <div class="space-y-4 text-lg">
+            <div>
+              <h3 class="font-semibold text-gray-800 dark:text-white">Address</h3>
+              <p class="text-gray-600 dark:text-gray-300">{{ config.address }}</p>
+              <p class="text-gray-600 dark:text-gray-300">{{ config.city }}, {{ config.state }}</p>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-800 dark:text-white">Phone</h3>
+              <p class="text-gray-600 dark:text-gray-300">{{ config.phone }}</p>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-800 dark:text-white">Email</h3>
+              <p class="text-gray-600 dark:text-gray-300">{{ config.email }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  }
 </section>
-}

@@ -29,26 +29,26 @@ export class ConfigService {
   }
 
   getConfig(): Observable<BaseResponse<ConfigModel>> {
-    if (this.cachedResponse) {
-      return of(this.cachedResponse);
-    }
+    // if (this.cachedResponse) {
+    //   return of(this.cachedResponse);
+    // }
 
-    if (this.request$) {
-      return this.request$;
-    }
+    // if (this.request$) {
+    //   return this.request$;
+    // }
 
-    try {
-      const raw = this.localStorageService.getItem(this.storageKey);
-      if (raw) {
-        const parsed = JSON.parse(raw) as BaseResponse<ConfigModel>;
-        if (parsed) {
-          this.cachedResponse = parsed;
-          return of(parsed);
-        }
-      }
-    } catch (err) {
-      console.warn('Failed to parse stored config, will fetch from API', err);
-    }
+    // try {
+    //   const raw = this.localStorageService.getItem(this.storageKey);
+    //   if (raw) {
+    //     const parsed = JSON.parse(raw) as BaseResponse<ConfigModel>;
+    //     if (parsed) {
+    //       this.cachedResponse = parsed;
+    //       return of(parsed);
+    //     }
+    //   }
+    // } catch (err) {
+    //   console.warn('Failed to parse stored config, will fetch from API', err);
+    // }
 
     return this.http
       .get<BaseResponse<ConfigModel>>(`${this.apiBaseUrl}/apps/config`)
