@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, WritableSignal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 // In a real app, this service would fetch events from a database.
@@ -27,36 +27,27 @@ interface Category {
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './events.component.html',
-  styleUrls: ['./events.component.scss'],
+  styleUrls: ['./events.component.css'],
 })
-export class EventsComponent {
-  // --- Service Injection & Data Fetching ---
+export class EventsComponent implements OnInit {
   private eventsService = inject(EventsService);
 
-  // Fetch all events and categories and convert them to signals.
-  public allEvents = toSignal<ChurchEvent[]>(this.eventsService.getEvents());
-  public categories = toSignal<Category[]>(this.eventsService.getCategories());
+  public allEvents = signal<ChurchEvent[]>([]);
+  public categories = signal<Category[]>([]);
 
-  // --- State Management with Signals ---
   public selectedCategory: WritableSignal<string> = signal('all');
 
-  // --- Computed Signals for Derived State ---
-  // A signal that holds all events sorted by date.
   private sortedEvents = computed(() => {
     const now = new Date();
-    // Filter out past events and sort the remaining ones by date.
     return this.allEvents() == undefined ? [] : this.allEvents()!
       .filter(event => event.date >= now)
       .sort((a, b) => a.date.getTime() - b.date.getTime());
   });
 
-  // A signal for the single "featured" event (the next one coming up).
   public featuredEvent = computed(() => this.sortedEvents()[0]);
 
-  // A signal for the grid of other upcoming events (all except the featured one).
   private gridEvents = computed(() => this.sortedEvents().slice(1));
 
-  // A signal that filters the grid events based on the selected category.
   public filteredGridEvents = computed(() => {
     const category = this.selectedCategory();
     const events = this.gridEvents();
@@ -78,6 +69,14 @@ export class EventsComponent {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
+    });
+  }
+
+  ngOnInit(): void {
+    this.eventsService.getEvents().subscribe({
+      next: (events: ChurchEvent[]) => {
+        this.allEvents.set(events);
+      }
     });
   }
 }

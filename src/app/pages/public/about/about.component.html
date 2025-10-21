@@ -1,4 +1,4 @@
-@if (pageData(); as data) {
+@if (configData(); as data) {
 <section class="relative h-[70vh] flex items-center justify-center text-center text-white overflow-hidden">
   <div class="absolute inset-0 z-0">
     <img src="assets/images/about-hero.jpg" alt="A collage representing the church's history" class="w-full h-full object-cover">
@@ -7,7 +7,7 @@
   <div class="relative z-10 px-4">
     <h1 class="text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">Our Journey of Faith</h1>
     <p class="text-lg md:text-xl max-w-3xl mx-auto text-gray-200">
-      Serving God and our community since {{ data.history.foundedYear }}
+      Serving God and our community since {{ data?.foundedYear }}
     </p>
   </div>
 </section>
@@ -16,12 +16,12 @@
   <div class="container mx-auto px-6">
     <div class="max-w-3xl mx-auto text-center mb-16">
       <h2 class="text-3xl font-bold text-primary-900 dark:text-primary-200">Our History</h2>
-      <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">{{ data.history.description }}</p>
+      <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">{{ data?.description }}</p>
     </div>
 
     <div class="relative max-w-4xl mx-auto">
       <div class="absolute left-4 md:left-1/2 w-1 h-full bg-primary-200 dark:bg-primary-900/70 rounded-full"></div>
-      @for (milestone of data.history.milestones; track milestone.year; let i = $index) {
+      @for (milestone of milestones(); track milestone.year; let i = $index) {
         <div class="relative mb-12 flex items-center w-full" [class.md:flex-row-reverse]="i % 2 !== 0">
           <div class="hidden md:block w-1/2"></div>
           <div class="w-full md:w-1/2 md:pl-8" [class.md:pr-8]="i % 2 !== 0" [class.md:pl-0]="i % 2 !== 0">
@@ -45,11 +45,11 @@
     <div class="grid md:grid-cols-2 gap-12 items-center">
       <div class="text-center md:text-left">
         <h2 class="text-3xl font-bold">Our Mission</h2>
-        <p class="mt-4 text-lg text-gray-300">To share the love of Christ, build a strong community of faith, and serve our neighbors with compassion and grace.</p>
+        <p class="mt-4 text-lg text-gray-300">{{ configData()?.mission }}</p>
       </div>
       <div class="text-center md:text-left">
         <h2 class="text-3xl font-bold">Our Vision</h2>
-        <p class="mt-4 text-lg text-gray-300">To be a beacon of hope and a center for spiritual growth, transforming lives and impacting our city for the glory of God.</p>
+        <p class="mt-4 text-lg text-gray-300">{{ configData()?.vision }}</p>
       </div>
     </div>
   </div>
@@ -59,7 +59,7 @@
   <div class="container mx-auto px-6 text-center">
     <h2 class="text-3xl font-bold mb-12 text-primary-900 dark:text-primary-200">What We Believe</h2>
     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-      @for (value of data.coreValues; track value.title) {
+      @for (value of coreValues(); track value.title) {
         <div class="bg-white dark:bg-gray-900 p-8 rounded-lg shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
           <div class="inline-block p-4 bg-primary-100 dark:bg-primary-900/50 rounded-full mb-4">
             <svg class="h-8 w-8 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -78,7 +78,7 @@
   <div class="container mx-auto px-6 text-center">
     <h2 class="text-3xl font-bold mb-12 text-primary-900 dark:text-primary-200">Meet Our Leadership</h2>
     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-      @for (member of data.leadershipTeam; track member.name) {
+      @for (member of teamMembers(); track member.name) {
         <div class="group text-center">
           <div class="relative w-48 h-48 mx-auto rounded-full overflow-hidden shadow-lg">
             <img [src]="member.image" [alt]="member.name" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">

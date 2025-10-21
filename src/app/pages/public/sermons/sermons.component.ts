@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, WritableSignal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -24,18 +24,14 @@ export interface Sermon {
   templateUrl: './sermons.component.html',
   styleUrls: ['./sermons.component.css'],
 })
-export class SermonsComponent {
-  // --- Service Injection & Data Fetching ---
+export class SermonsComponent implements OnInit {
   private sermonsService = inject(SermonsService);
-  public allSermons = toSignal<Sermon[]>(this.sermonsService.getSermons());
+  public allSermons = signal<Sermon[]>([]);
   
-  // --- State Management with Signals for Filtering ---
   public searchTerm: WritableSignal<string> = signal('');
   public selectedSeries: WritableSignal<string> = signal('all');
   public selectedSpeaker: WritableSignal<string> = signal('all');
 
-  // --- Computed Signals for Derived State ---
-  // A signal that holds all events sorted by date (newest first).
   private sortedSermons = computed(() => {
     return this.allSermons()!.sort((a, b) => b.date.getTime() - a.date.getTime());
   });
@@ -83,5 +79,14 @@ export class SermonsComponent {
 
   public getYouTubeEmbedUrl(videoId: string): string {
     return `https://www.youtube.com/embed/${videoId}`;
+  }
+
+
+  ngOnInit(): void {
+    this.sermonsService.getSermons().subscribe({
+      next: (sermons: Sermon[]) => {
+        this.allSermons.set(sermons);
+      }
+    });
   }
 }
