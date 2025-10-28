@@ -14,7 +14,8 @@ export interface ConfigModel {
     website: string;
     logoUrl?: string;
     heroImageUrl?: string;
-    aboutContent: string;
+    ourHistory: string;
+    ourBeliefs: string;
     serviceTimes: string;
     pastorName: string;
     pastorRole: string;

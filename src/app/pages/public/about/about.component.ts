@@ -1,11 +1,11 @@
-import { ConfigService } from './../../../infrastructure/services/config.service';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AboutService } from '../../../infrastructure/services/about.service';
 import { CoreValue, Milestone, TeamMember } from '../../../core/models/about.model';
-import { BaseResponse } from '../../../core/models/base-response';
+import { BaseResponse, BaseResponseExt } from '../../../core/models/base-response';
 import { ConfigModel } from '../../../core/models/config.model';
+import { CommonService } from '../../../infrastructure/services/common.service';
 
 @Component({
   selector: 'app-about',
@@ -15,23 +15,27 @@ import { ConfigModel } from '../../../core/models/config.model';
   styleUrls: ['./about.component.scss'],
 })
 export class AboutComponent implements OnInit {
-  private aboutService = inject(AboutService);
-  private configService = inject(ConfigService);
+  private commonService = inject(CommonService);
 
   public configData = signal<ConfigModel | null>(null);
   public milestones = signal<Milestone[]>([]);
   public teamMembers = signal<TeamMember[]>([]);
   public coreValues = signal<CoreValue[]>([]);
   ngOnInit(): void {
-    this.configService.getConfig().subscribe({
+    this.commonService.getConfig().subscribe({
       next: (response: BaseResponse<ConfigModel>) => {
         this.configData.set(response.data);
       }
     });
-    // this.aboutService.getAboutPageData().subscribe({
-    //   next: (data: BaseResponse<AboutModel>) => {
-    //     this.pageData.set(data.data);
-    //   }
-    // });
+    this.commonService.getMilestones().subscribe({
+      next: (data: BaseResponseExt<Milestone>) => {
+        this.milestones.set(data.data);
+      }
+    });
+    this.commonService.getTeamMembers().subscribe({
+      next: (data: BaseResponseExt<TeamMember>) => {
+        this.teamMembers.set(data.data);
+      }
+    });
   }
 }

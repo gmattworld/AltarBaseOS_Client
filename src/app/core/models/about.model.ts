@@ -1,5 +1,6 @@
 export interface Milestone {
-  year: string;
+  id: string;
+  milestoneDate: string;
   title: string;
   description: string;
 }
@@ -7,7 +8,7 @@ export interface Milestone {
 export interface TeamMember {
   name: string;
   role: string;
-  image: string;
+  imageUrl: string;
   bio: string;
 }
 
