@@ -8,6 +8,7 @@ import { AuthService } from '../../services/auth.service';
 import { LocalStorageService } from '../../services/local-storage.service';
 import { ConfigService } from '../../services/config.service';
 import { ConfigModel } from '../../../core/models/config.model';
+import { CommonService } from '../../services/common.service';
 
 // --- Data Models for clarity ---
 interface NavItem {
@@ -34,7 +35,7 @@ export class NavbarComponent implements OnInit {
   private localStorageService = inject(LocalStorageService);
   private router = inject(Router);
   private renderer = inject(Renderer2);
-  private configService = inject(ConfigService);
+  private commonService = inject(CommonService);
  
 
   // --- State Management with Signals ---
@@ -113,7 +114,7 @@ export class NavbarComponent implements OnInit {
 
 
   ngOnInit() {
-    this.configService.getConfig().subscribe(config => {
+    this.commonService.getConfig().subscribe(config => {
       this.configData.set(config.data ?? null);
     });
   }

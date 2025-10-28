@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ConfigService } from '../../../infrastructure/services/config.service';
 import { ConfigModel } from '../../../core/models/config.model';
+import { CommonService } from '../../services/common.service';
 
 // --- Data Models for clarity ---
 interface Link {
@@ -30,7 +31,7 @@ interface SocialLink {
   styleUrls: ['./footer.component.scss'],
 })
 export class FooterComponent implements OnInit {
-  private configService = inject(ConfigService);
+  private commonService = inject(CommonService);
 
   public configData = signal<ConfigModel | null>(null);
 
@@ -71,7 +72,7 @@ export class FooterComponent implements OnInit {
 
 
   ngOnInit() {
-    this.configService.getConfig().subscribe(config => {
+    this.commonService.getConfig().subscribe(config => {
       this.configData.set(config.data);
     });
   }

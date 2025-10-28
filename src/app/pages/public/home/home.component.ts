@@ -1,11 +1,10 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit, computed, inject, signal } from "@angular/core";
-import { toSignal } from "@angular/core/rxjs-interop";
 import { RouterModule } from "@angular/router";
 import { environment } from "../../../../environments/environment";
 import { ConfigModel } from "../../../core/models/config.model";
 import { SafePipe } from "../../../infrastructure/pipes/safe.pipe";
-import { ConfigService } from "../../../infrastructure/services/config.service";
+import { CommonService } from "../../../infrastructure/services/common.service";
 
 // --- Data Models for clarity and type safety ---
 interface Ministry {
@@ -36,7 +35,7 @@ interface UpcomingEvent {
 })
 export class HomeComponent implements OnInit {
   // --- Service Injection ---
-  private configService = inject(ConfigService);
+  private commonService = inject(CommonService);
 
   // --- State Management with Signals ---
   // All page data is now reactive. The initial value is undefined for loading state detection.
@@ -108,7 +107,7 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.configService.getConfig().subscribe({
+    this.commonService.getConfig().subscribe({
       next: (config) => {
         this.configData.set(config.data ?? null);
       },
