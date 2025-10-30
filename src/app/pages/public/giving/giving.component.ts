@@ -12,8 +12,6 @@ import { environment } from '../../../../environments/environment';
   styleUrls: ['./giving.component.scss'],
 })
 export class GivingComponent implements OnInit {
-  // Church Information
-  churchName = environment.churchName;
 
   // Giving Form
   givingForm = {

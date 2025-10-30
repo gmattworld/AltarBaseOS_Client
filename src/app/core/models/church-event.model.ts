@@ -1,12 +1,17 @@
 export interface ChurchEvent {
+  id: string|null;
   title: string;
-  date: Date;
-  time: string;
-  location: string;
-  description: string;
-  category: 'Outreach' | 'Youth' | 'Family' | 'Fellowship';
-  image: string;
+  description?: string;
+  eventStart: string;
+  eventEnd?: string|null;
+  isAllDay: boolean;
+  locationName: string;
+  locationAddress?: string;
+  virtualEventUrl?: string;
+  imageUrl?: string;
   registrationRequired: boolean;
+  registrationUrl?: string;
+  eventCategoryId: string;
 }
 
 export interface Category {

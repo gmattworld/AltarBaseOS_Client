@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { ConfigModel } from './../../../core/models/config.model';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { environment } from '../../../../environments/environment';
+import { CommonService } from '../../../infrastructure/services/common.service';
 
 @Component({
   selector: 'app-visit',
@@ -11,19 +13,9 @@ import { environment } from '../../../../environments/environment';
   styleUrls: ['./visit.component.scss'],
 })
 export class VisitComponent implements OnInit {
-  // Church Information
-  churchName = environment.churchName;
-  churchAddress = environment.churchAddress;
-  churchCity = environment.churchCity;
-  churchState = environment.churchState;
-  churchZip = environment.churchZip;
-  churchPhone = environment.churchPhone;
-  churchEmail = environment.churchEmail;
-
-  // Service Times
-  serviceTimes = environment.serviceTimes;
-
-  // What to Expect
+  private commonService = inject(CommonService);
+  
+  public configData = signal<ConfigModel | null>(null);
   whatToExpect = [
     {
       title: 'Warm Welcome',
@@ -73,6 +65,13 @@ export class VisitComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    // Initialize any necessary data or services
+    this.commonService.getConfig().subscribe({
+      next: (config) => {
+        this.configData.set(config.data ?? null);
+      },
+      error: (err) => {
+        console.error('Failed to load config:', err);
+      },
+    });
   }
 }

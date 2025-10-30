@@ -11,17 +11,6 @@ import { environment } from '../../../../environments/environment';
   styleUrls: ['./services.component.scss'],
 })
 export class ServicesComponent implements OnInit {
-  // Church Information
-  churchName = environment.churchName;
-  churchAddress = environment.churchAddress;
-  churchCity = environment.churchCity;
-  churchState = environment.churchState;
-  churchZip = environment.churchZip;
-  churchPhone = environment.churchPhone;
-  churchEmail = environment.churchEmail;
-
-  // Service Times
-  serviceTimes = environment.serviceTimes;
 
   // Regular Services
   regularServices = [

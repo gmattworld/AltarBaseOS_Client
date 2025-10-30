@@ -1,25 +1,14 @@
 import { Component, computed, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-// In a real app, this service would fetch events from a database.
-import { EventsService } from '../../../infrastructure/services/events.service';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { CommonService } from '../../../infrastructure/services/common.service';
+import { BaseResponseExt } from '../../../core/models/base-response';
+import { Category, ChurchEvent } from '../../../core/models/church-event.model'; 
+import { map } from 'rxjs';
 
-// --- Data Models for Type Safety ---
-interface ChurchEvent {
-  title: string;
-  date: Date; // Using Date objects is more robust than strings
-  time: string;
-  location: string;
-  description: string;
-  category: 'Outreach' | 'Youth' | 'Family' | 'Fellowship';
-  image: string;
-  registrationRequired: boolean;
-}
-
-interface Category {
-  id: string;
-  name: string;
+interface ChurchEventViewModel extends Omit<ChurchEvent, 'eventStart' | 'eventEnd'> {
+  eventStart: Date;
+  eventEnd: Date | null;
 }
 
 @Component({
@@ -30,18 +19,22 @@ interface Category {
   styleUrls: ['./events.component.css'],
 })
 export class EventsComponent implements OnInit {
-  private eventsService = inject(EventsService);
+  private commonService = inject(CommonService);
 
-  public allEvents = signal<ChurchEvent[]>([]);
+  // Signals now use the ViewModel
+  public allEvents = signal<ChurchEventViewModel[]>([]);
   public categories = signal<Category[]>([]);
-
   public selectedCategory: WritableSignal<string> = signal('all');
 
   private sortedEvents = computed(() => {
     const now = new Date();
-    return this.allEvents() == undefined ? [] : this.allEvents()!
-      .filter(event => event.date >= now)
-      .sort((a, b) => a.date.getTime() - b.date.getTime());
+    if (!this.allEvents().length) {
+        return [];
+    }
+    // This logic now works, as eventStart is a Date
+    return this.allEvents()
+      .filter(event => event.eventStart >= now)
+      .sort((a, b) => a.eventStart.getTime() - b.eventStart.getTime());
   });
 
   public featuredEvent = computed(() => this.sortedEvents()[0]);
@@ -54,15 +47,52 @@ export class EventsComponent implements OnInit {
     if (category === 'all') {
       return events;
     }
-    return events.filter(event => event.category.toLowerCase() === category);
+    // Updated to use eventCategoryId
+    return events.filter(event => event.eventCategoryId === category);
   });
 
   // --- Methods ---
+  
+  ngOnInit(): void {
+    this.loadEvents();
+    this.loadCategories();
+  }
+
+  loadEvents(): void {
+    this.commonService.getEvents().pipe(
+      // Convert string dates to Date objects
+      map((resp: BaseResponseExt<ChurchEvent>) => {
+        return resp.data.map(event => ({
+          ...event,
+          eventStart: new Date(event.eventStart),
+          eventEnd: event.eventEnd ? new Date(event.eventEnd) : null
+        }));
+      })
+    ).subscribe({
+      next: (viewModels: ChurchEventViewModel[]) => {
+        this.allEvents.set(viewModels);
+      }
+    });
+  }
+
+  loadCategories(): void {
+    this.commonService.getEventCategories().subscribe({
+      next: (resp: BaseResponseExt<Category>) => {
+        const allCategory: Category = { id: 'all', name: 'All Events' };
+        this.categories.set([allCategory, ...resp.data]);
+      }
+    });
+  }
+
   selectCategory(categoryId: string): void {
     this.selectedCategory.set(categoryId);
   }
 
-  // A simple method to format dates, now accepting a Date object.
+  // Helper to get category name from ID
+  getCategoryName(id: string): string {
+    return this.categories().find(c => c.id === id)?.name || 'General';
+  }
+
   formatDate(date: Date): string {
     return date.toLocaleDateString('en-GB', {
       weekday: 'long',
@@ -71,12 +101,13 @@ export class EventsComponent implements OnInit {
       day: 'numeric',
     });
   }
-
-  ngOnInit(): void {
-    this.eventsService.getEvents().subscribe({
-      next: (events: ChurchEvent[]) => {
-        this.allEvents.set(events);
-      }
+  
+  // New helper to format time
+  formatTime(date: Date): string {
+    return date.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
     });
   }
 }

@@ -6,6 +6,7 @@ import { environment } from '../../../environments/environment';
 import { ConfigModel } from '../../core/models/config.model';
 import { LocalStorageService } from './local-storage.service';
 import { Milestone, TeamMember } from '../../core/models/about.model';
+import { Category, ChurchEvent } from '../../core/models/church-event.model';
 
 @Injectable({
   providedIn: 'root'
@@ -91,6 +92,44 @@ export class CommonService {
   getTeamMembers(): Observable<BaseResponseExt<TeamMember>>{
     return this.http
       .get<BaseResponseExt<TeamMember>>(`${this.apiBaseUrl}/apps/teams`)
+      .pipe(
+        map((response) => {
+          // console.log('Config fetched from API:', response);
+          // if (response.success) {
+          //   this.localStorageService.setItem(this.storageKey, JSON.stringify(response));
+          // }
+          return response;
+        }),
+        shareReplay(1),
+        catchError(err => {
+          this.request$ = undefined;
+          return throwError(() => err);
+        })
+      );
+  }
+
+
+  getEventCategories(): Observable<BaseResponseExt<Category>> {
+    return this.http
+      .get<BaseResponseExt<Category>>(`${this.apiBaseUrl}/apps/categories`)
+      .pipe(
+        map((response) => {
+          // console.log('Config fetched from API:', response);
+          // if (response.success) {
+          //   this.localStorageService.setItem(this.storageKey, JSON.stringify(response));
+          // }
+          return response;
+        }),
+        shareReplay(1),
+        catchError(err => {
+          this.request$ = undefined;
+          return throwError(() => err);
+        })
+      );
+  }
+  getEvents(): Observable<BaseResponseExt<ChurchEvent>> {
+    return this.http
+      .get<BaseResponseExt<ChurchEvent>>(`${this.apiBaseUrl}/apps/events`)
       .pipe(
         map((response) => {
           // console.log('Config fetched from API:', response);
