@@ -21,7 +21,7 @@ interface ChurchEventViewModel extends Omit<ChurchEvent, 'eventStart' | 'eventEn
 export class EventsComponent implements OnInit {
   private commonService = inject(CommonService);
 
-  // Signals now use the ViewModel
+  public isLoading = signal(true);
   public allEvents = signal<ChurchEventViewModel[]>([]);
   public categories = signal<Category[]>([]);
   public selectedCategory: WritableSignal<string> = signal('all');
@@ -31,7 +31,6 @@ export class EventsComponent implements OnInit {
     if (!this.allEvents().length) {
         return [];
     }
-    // This logic now works, as eventStart is a Date
     return this.allEvents()
       .filter(event => event.eventStart >= now)
       .sort((a, b) => a.eventStart.getTime() - b.eventStart.getTime());
@@ -59,18 +58,19 @@ export class EventsComponent implements OnInit {
   }
 
   loadEvents(): void {
+    this.isLoading.set(true);
     this.commonService.getEvents().pipe(
-      // Convert string dates to Date objects
       map((resp: BaseResponseExt<ChurchEvent>) => {
         return resp.data.map(event => ({
           ...event,
           eventStart: new Date(event.eventStart),
           eventEnd: event.eventEnd ? new Date(event.eventEnd) : null
         }));
-      })
+      }),
     ).subscribe({
       next: (viewModels: ChurchEventViewModel[]) => {
         this.allEvents.set(viewModels);
+        this.isLoading.set(false);
       }
     });
   }

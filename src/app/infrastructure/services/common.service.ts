@@ -7,6 +7,7 @@ import { ConfigModel } from '../../core/models/config.model';
 import { LocalStorageService } from './local-storage.service';
 import { Milestone, TeamMember } from '../../core/models/about.model';
 import { Category, ChurchEvent } from '../../core/models/church-event.model';
+import { Sermon } from '../../pages/public/sermons/sermons.component';
 
 @Injectable({
   providedIn: 'root'
@@ -130,6 +131,25 @@ export class CommonService {
   getEvents(): Observable<BaseResponseExt<ChurchEvent>> {
     return this.http
       .get<BaseResponseExt<ChurchEvent>>(`${this.apiBaseUrl}/apps/events`)
+      .pipe(
+        map((response) => {
+          // console.log('Config fetched from API:', response);
+          // if (response.success) {
+          //   this.localStorageService.setItem(this.storageKey, JSON.stringify(response));
+          // }
+          return response;
+        }),
+        shareReplay(1),
+        catchError(err => {
+          this.request$ = undefined;
+          return throwError(() => err);
+        })
+      );
+  }
+
+  getSermons(): Observable<BaseResponseExt<Sermon>> {
+    return this.http
+      .get<BaseResponseExt<Sermon>>(`${this.apiBaseUrl}/apps/sermons`)
       .pipe(
         map((response) => {
           // console.log('Config fetched from API:', response);

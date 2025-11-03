@@ -1,9 +1,9 @@
 import { Component, computed, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { SermonsService } from '../../../infrastructure/services/sermons.service';
-import { SafePipe } from '../../../infrastructure/pipes/safe.pipe';
+import { finalize } from 'rxjs'; // Import finalize
+import { BaseResponseExt } from '../../../core/models/base-response';
+import { CommonService } from '../../../infrastructure/services/common.service';
 
 // --- Data Models for Type Safety ---
 export interface Sermon {
@@ -20,20 +20,29 @@ export interface Sermon {
 @Component({
   selector: 'app-sermons',
   standalone: true,
-  imports: [CommonModule, RouterModule, SafePipe],
+  imports: [CommonModule, RouterModule],
   templateUrl: './sermons.component.html',
   styleUrls: ['./sermons.component.css'],
 })
 export class SermonsComponent implements OnInit {
-  private sermonsService = inject(SermonsService);
-  public allSermons = signal<Sermon[]>([]);
+  private commonService = inject(CommonService);
   
+  // State Signals
+  public allSermons = signal<Sermon[]>([]);
+  public isLoadingInitialData: WritableSignal<boolean> = signal(true); // NEW loading signal
+
+  // Filter Signals
   public searchTerm: WritableSignal<string> = signal('');
   public selectedSeries: WritableSignal<string> = signal('all');
   public selectedSpeaker: WritableSignal<string> = signal('all');
 
+  // Computed Values
+
+  // Sorts all sermons by date (most recent first).
   private sortedSermons = computed(() => {
-    return this.allSermons()!.sort((a, b) => b.date.getTime() - a.date.getTime());
+    // Ensure allSermons() is not null/undefined before accessing length
+    const sermons = this.allSermons() || []; 
+    return sermons.sort((a, b) => b.date.getTime() - a.date.getTime());
   });
 
   // A signal for the single "latest" sermon.
@@ -58,8 +67,14 @@ export class SermonsComponent implements OnInit {
   });
 
   // Unique lists for filter dropdowns
-  public uniqueSeries = computed(() => ['all', ...new Set(this.allSermons()!.map(s => s.series))]);
-  public uniqueSpeakers = computed(() => ['all', ...new Set(this.allSermons()!.map(s => s.speaker))]);
+  public uniqueSeries = computed(() => {
+    const seriesList = this.allSermons().map(s => s.series);
+    return ['all', ...new Set(seriesList)];
+  });
+  public uniqueSpeakers = computed(() => {
+    const speakerList = this.allSermons().map(s => s.speaker);
+    return ['all', ...new Set(speakerList)];
+  });
 
   // --- Methods ---
   public onSearchInput(event: Event): void {
@@ -83,9 +98,22 @@ export class SermonsComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.sermonsService.getSermons().subscribe({
-      next: (sermons: Sermon[]) => {
-        this.allSermons.set(sermons);
+    this.isLoadingInitialData.set(true);
+    this.commonService.getSermons().subscribe({
+      next: (sermons: BaseResponseExt<Sermon>) => {
+        this.isLoadingInitialData.set(false)
+        // Ensure date fields are correctly converted to Date objects
+        const processedSermons = sermons.data.map(s => ({
+            ...s,
+            date: s.date instanceof Date ? s.date : new Date(s.date)
+        }));
+        this.allSermons.set(processedSermons);
+        
+      }, 
+      error: (err: any) => {
+        this.isLoadingInitialData.set(false)
+        console.error('Failed to load sermons:', err);
+        this.allSermons.set([]); // Set to empty array on error
       }
     });
   }
