@@ -54,12 +54,12 @@
         <h2 class="text-3xl font-bold mb-2 text-primary-900 dark:text-primary-300">Join Our Services</h2>
         <p class="text-lg text-gray-600 dark:text-gray-400 mb-12">Experience heartfelt worship and an inspiring message.</p>
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          @for (service of weeklySchedule(); track service.day + service.type) {
+          @for (service of weeklySchedule(); track service.name) {
           <div
             class="bg-white dark:bg-gray-700 rounded-lg p-6 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-            <h3 class="text-xl font-semibold text-secondary-600 dark:text-secondary-400 mb-2">{{ service.day }}</h3>
-            <p class="text-3xl font-bold text-gray-800 dark:text-white mb-1">{{ service.time }}</p>
-            <p class="text-gray-500 dark:text-gray-300">{{ service.type }}</p>
+            <h3 class="text-xl font-semibold text-secondary-600 dark:text-secondary-400 mb-2">{{ service.dayOfWeek }}</h3>
+            <p class="text-3xl font-bold text-gray-800 dark:text-white mb-1">{{ service.startTime }}</p>
+            <p class="text-gray-500 dark:text-gray-300">{{ service.name }}</p>
           </div>
           }
         </div>
@@ -96,15 +96,15 @@
             class="bg-white dark:bg-gray-700 rounded-lg p-6 shadow-md hover:shadow-xl transition-shadow duration-300 flex items-center space-x-6">
             <div class="flex-shrink-0 text-center bg-secondary-50 dark:bg-secondary-900/30 rounded-lg p-3 w-24">
               <p class="text-secondary-600 dark:text-secondary-400 text-sm font-bold uppercase">
-                {{ event.date | date: 'MMM' }}
+                {{ event.eventStart| date: 'MMM' }}
               </p>
               <p class="text-gray-800 dark:text-white text-3xl font-bold">
-                {{ event.date | date: 'd' }}
+                {{ event.eventStart | date: 'd' }}
               </p>
             </div>
             <div>
               <h3 class="text-xl font-semibold text-gray-900 dark:text-white">{{ event.title }}</h3>
-              <p class="text-gray-500 dark:text-gray-400 text-sm mb-2">{{ event.time }}</p>
+              <p class="text-gray-500 dark:text-gray-400 text-sm mb-2">{{ event.eventStart | date: 'h:mm a' }}</p>
               <p class="text-gray-600 dark:text-gray-300">{{ event.description }}</p>
             </div>
           </div>

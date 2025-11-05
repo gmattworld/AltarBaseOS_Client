@@ -4,18 +4,7 @@ import { RouterModule } from '@angular/router';
 import { finalize } from 'rxjs'; // Import finalize
 import { BaseResponseExt } from '../../../core/models/base-response';
 import { CommonService } from '../../../infrastructure/services/common.service';
-
-// --- Data Models for Type Safety ---
-export interface Sermon {
-  id: string;
-  title: string;
-  description: string;
-  date: Date;
-  speaker: string;
-  series: string;
-  videoId: string; // YouTube Video ID
-  thumbnailUrl: string;
-}
+import { Sermon } from '../../../core/models/sermon';
 
 @Component({
   selector: 'app-sermons',

@@ -5,6 +5,9 @@ import { environment } from "../../../../environments/environment";
 import { ConfigModel } from "../../../core/models/config.model";
 import { SafePipe } from "../../../infrastructure/pipes/safe.pipe";
 import { CommonService } from "../../../infrastructure/services/common.service";
+import { BaseResponse, BaseResponseExt } from "../../../core/models/base-response";
+import { ChurchService } from "../../../core/models/church-service";
+import { ChurchEvent } from "../../../core/models/church-event.model";
 
 // --- Data Models for clarity and type safety ---
 interface Ministry {
@@ -34,36 +37,10 @@ interface UpcomingEvent {
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  // --- Service Injection ---
   private commonService = inject(CommonService);
-
-  // --- State Management with Signals ---
-  // All page data is now reactive. The initial value is undefined for loading state detection.
-  // In a real app, this data would come from different service calls.
   public configData = signal<ConfigModel | null>(null);
-  
-  // Mocked data, but now as signals. In a real app, you'd fetch this via services.
-  public weeklySchedule = signal<ServiceTime[]>([
-    { day: 'Sunday', time: "9:00 AM", type: 'Celebration Service' },
-    { day: 'Sunday', time: "6:00 PM", type: 'Thanksgiving Service' },
-    { day: 'Tuesday', time: "7:00 PM", type: 'Digging Deep' },
-    { day: 'Thursday', time: "7:00 PM", type: 'Faith Clinic' },
-  ]);
-
-  public upcomingEvents = signal<UpcomingEvent[]>([
-    {
-      title: 'Annual Youth Convention',
-      date: '2025-11-15',
-      time: '5:00 PM',
-      description: 'A powerful event for our youth to connect and grow in faith.',
-    },
-    {
-      title: 'Community Food Drive',
-      date: '2025-11-22',
-      time: '10:00 AM',
-      description: 'Join us as we give back to our community and share God\'s love.',
-    },
-  ]);
+  public weeklySchedule = signal<ChurchService[]>([]);
+  public upcomingEvents = signal<ChurchEvent[]>([]);
 
   public ministries = signal<Ministry[]>([
     {
@@ -114,6 +91,18 @@ export class HomeComponent implements OnInit {
       error: (err) => {
         console.error('Failed to load config:', err);
       },
+    });
+
+    this.commonService.getChurchServices().subscribe({
+      next: (resp: BaseResponseExt<ChurchService>) => {
+        this.weeklySchedule.set(resp.data);
+      }
+    });
+
+    this.commonService.getEvents().subscribe({
+      next: (resp: BaseResponseExt<ChurchEvent>) => {
+        this.upcomingEvents.set(resp.data);
+      }
     });
   }
 }
